@@ -1,7 +1,9 @@
 # Session 1: Dictionaries in Python
 # Problem Set Version 1
 '''Problem 1: Subsequence
-Write a function is_subsequence() that takes in a list of integers lst and a list of integers sequence as parameters. Given these two lists, determine whether the sequence list is a subsequence of the lst list. A subsequence of a list is a set of numbers that aren't necessarily adjacent but are in the same relative order as they appear in the list. Return True if sequence is a subsequence, and False otherwise.'''
+Write a function is_subsequence() that takes in a list of integers lst and a list of integers sequence as parameters. 
+Given these two lists, determine whether the sequence list is a subsequence of the lst list. 
+A subsequence of a list is a set of numbers that aren't necessarily adjacent but are in the same relative order as they appear in the list. Return True if sequence is a subsequence, and False otherwise.'''
 
 def is_subsequence(lst, sequence):
 	empty_list = []
@@ -43,7 +45,9 @@ print(create_dictionary(keys, values))
 print()
 
 '''Problem 3: Print Pair
-Write a function print_pair() that takes in a dictionary `dictionary` and a key `target` as parameters. The function looks for the `target` and when found, it prints the key and it's associated value as "Key: <key>" followed by "Value: <value>". If `target` is not in `dictionary`, print "That pair does not exist!".'''
+Write a function print_pair() that takes in a dictionary `dictionary` and a key `target` as parameters. 
+The function looks for the `target` and when found, it prints the key and it's associated value as "Key: <key>" followed by "Value: <value>". 
+If `target` is not in `dictionary`, print "That pair does not exist!".'''
 
 def print_pair(dictionary, target):
 	for k in dictionary:
@@ -58,7 +62,8 @@ print(print_pair(dictionary, "spongebob"))
 print()
 
 '''Problem 4: Keys Versus Values
-Write a function keys_v_values() that takes in a dictionary `dictionary` whose keys and values are both integers. The function should find the sum of all keys in the dictionary and the sum of all values.
+Write a function keys_v_values() that takes in a dictionary `dictionary` whose keys and values are both integers. 
+The function should find the sum of all keys in the dictionary and the sum of all values.
 If the sum of all keys is greater than the sum of all values, the function should return the string "keys".
 If the sum of all values is greater than the sum of all keys, the function should return the string "values".
 If keys and values have equal sums, the function should return the string "balanced".'''
@@ -114,7 +119,9 @@ print(restock_inventory(current_inventory, restock_list))
 print()
 
 '''Problem 6: Calculate GPA
-Write a function calculate_gpa() that calculates the grade point average (GPA) for a student based on their course grades and returns the gpa as a float. The function takes in a dictionary report_card as a parameter where each key-value pair represents a course and the grade received in that course respectively. The grades are represented as strings ("A", "B", "C", "D", "F") and each grade corresponds to a certain number of grade points:
+Write a function calculate_gpa() that calculates the grade point average (GPA) for a student based on their course grades and returns the gpa as a float. 
+The function takes in a dictionary report_card as a parameter where each key-value pair represents a course and the grade received in that course respectively. 
+The grades are represented as strings ("A", "B", "C", "D", "F") and each grade corresponds to a certain number of grade points:
 
 "A" = 4
 "B" = 3
@@ -138,7 +145,8 @@ print()
 '''Problem 7: Best Book
 Imagine you are working on a book review software like Goodreads. Write a function named highest_rated() that returns the book with the highest rating.
 
-The function should take in a list of dictionaries named books as a parameter. Each dictionary represents data associated with a book, including its title, author, and rating. The function should return the dictionary for the book with the highest rating.'''
+The function should take in a list of dictionaries named books as a parameter. Each dictionary represents data associated with a book, including its title, author, and rating. 
+The function should return the dictionary for the book with the highest rating.'''
 def highest_rated(books):
 	max_val = -9999
 	max_dict = {}
@@ -207,7 +215,9 @@ print(sum_even_values(dictionary))
 print()
 
 '''Problem 5: Merge Catalogs
-Write a function merge_catalogs() that combines two product catalogs, catalog1 and catalog2 as parameters. Each parameter is a dictionary where each key-value pair represents a product name and its price, respectively. If the same product exists in both catalogs, the price from the second catalog should overwrite the price in the first. Return the updated first catalog dictionary.'''
+Write a function merge_catalogs() that combines two product catalogs, catalog1 and catalog2 as parameters. 
+Each parameter is a dictionary where each key-value pair represents a product name and its price, respectively. 
+If the same product exists in both catalogs, the price from the second catalog should overwrite the price in the first. Return the updated first catalog dictionary.'''
 def merge_catalogs(catalog1, catalog2):
 	catalog1.update(catalog2)
 	return catalog1
@@ -218,7 +228,8 @@ print(merge_catalogs(catalog1, catalog2))
 print()
 
 '''Problem 6: Items to Restock
-Write a function get_items_to_restock() that takes in a dictionary products that maps product names to their quantities and an integer restock_threshold as parameters. The function returns a list of products that have a value less than restock_threshold and need to be restocked. If products is empty, the function return an empty list.'''
+Write a function get_items_to_restock() that takes in a dictionary products that maps product names to their quantities and an integer restock_threshold as parameters. 
+The function returns a list of products that have a value less than restock_threshold and need to be restocked. If products is empty, the function return an empty list.'''
 
 def get_items_to_restock(products, restock_threshold):
 	restock_list = []
@@ -237,7 +248,8 @@ print()
 # Session 2: Dictionaries in Python II
 # Problem Set Version 1
 '''Problem 1: Cast Vote
-Write a function cast_vote() that records a vote for a candidate in an election. The function accepts a dictionary votes that maps candidates to their current number of votes and a string candidate that represents the candidate the user would like to vote for. If the candidate doesn't exist, add them to the dictionary. The function should return the updated dictionary.'''
+Write a function cast_vote() that records a vote for a candidate in an election. The function accepts a dictionary votes that maps candidates to their current number of votes 
+and a string candidate that represents the candidate the user would like to vote for. If the candidate doesn't exist, add them to the dictionary. The function should return the updated dictionary.'''
 
 def cast_vote(votes, candidate):
 	# loop through the dictionary list, if candidate exist, add 1 to candidate vote
@@ -299,7 +311,8 @@ print(output)
 print()
 
 '''Problem 5: Find Majority Element
-Write a function find_majority_element() that takes in a list of integers elements and finds the majority element in the list. A majority element is an element that appears more than n/2 times where n is the size of the list. If there is no majority element, return None.'''
+Write a function find_majority_element() that takes in a list of integers elements and finds the majority element in the list. 
+A majority element is an element that appears more than n/2 times where n is the size of the list. If there is no majority element, return None.'''
 
 def find_majority_element(elements):
 	from collections import Counter
@@ -332,7 +345,8 @@ print(group_by_frequency(lst))
 print()
 
 '''Problem 7: Target Sum
-Write a function two_sum() that takes in a list of integers nums and an integer target as parameters. The function should return the indices of the two numbers that add up to target. You may assume that each input would have exactly one solution and you may not use the same element twice. The function can return the indices in any order.'''
+Write a function two_sum() that takes in a list of integers nums and an integer target as parameters. The function should return the indices of the two numbers that add up to target. 
+You may assume that each input would have exactly one solution and you may not use the same element twice. The function can return the indices in any order.'''
 
 def two_sum(nums, target):
 	left = 0
