@@ -450,3 +450,6 @@ if __name__ == "__main__":
 	upper = -1
 	print(find_missing_clues(clues, lower, upper))
 	print()
+
+	print("------ # Session 2 ------ ")
+	print("------ # Standard Problem Set 1 ------ ")
