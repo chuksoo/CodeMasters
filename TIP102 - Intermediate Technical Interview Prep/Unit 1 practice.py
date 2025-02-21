@@ -266,12 +266,12 @@ def non_decreasing(nums):
 			count += 1
 			if count > 1:
 				return f'{nums}: ' + str(False)
-		# Case 1: Modify nums[1] (decrease it)
-		if i == 0 or nums[i - 1] <= nums[i + 1]:
-			nums[i] = nums[i + 1]
-		# Case 2: Modify nums[i + 1] (increase it)
-		else:
-			nums[i + 1] = nums[i]
+			# Case 1: Modify nums[1] (decrease it)
+			if i == 0 or nums[i - 1] <= nums[i + 1]:
+				nums[i] = nums[i + 1]
+			# Case 2: Modify nums[i + 1] (increase it)
+			else:
+				nums[i + 1] = nums[i]
 	return f'{nums}: ' + str(True)
 		
 
