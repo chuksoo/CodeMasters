@@ -456,6 +456,7 @@ if __name__ == "__main__":
 	upper = -1
 	print(find_missing_clues(clues, lower, upper))
 	print()
+<<<<<<< HEAD
 	vegetable_patch = [
 	['x', 'c', 'x'],
 	['x', 'x', 'x'],
@@ -464,3 +465,8 @@ if __name__ == "__main__":
 	]
 	print(harvest(vegetable_patch))
 	print()
+=======
+
+	print("------ # Session 2 ------ ")
+	print("------ # Standard Problem Set 1 ------ ")
+>>>>>>> c75822c8240a162f423371e740c9c7b966194727
