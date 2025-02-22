@@ -284,7 +284,21 @@ A clue x is considered missing if x is in the range [lower, upper] and x is not 
 Return the shortest sorted list of ranges that exactly covers all the missing numbers. 
 That is, no element of clues is included in any of the ranges, and each missing number is covered by one of the ranges.'''
 def find_missing_clues(clues, lower, upper):
-   pass
+	# sort the clues list
+	clues.sort()
+	# iniialize missing range
+	missing_range = []
+	# handle gap befoe fist clue
+	if lower < clues[0]:
+		missing_range.append([lower, clues[0] - 1])
+	# check gaps between clues
+	for i in range(len(clues) - 1):
+		if clues[i] + 1 < clues[i + 1]:
+			missing_range.append([clues[i] + 1, clues[i + 1] - 1])
+	# handle gap after last clue
+	if upper > clues[-1]:
+		missing_range.append([clues[-1] + 1, upper])
+	return missing_range
 
 '''Problem 6: Vegetable Harvest
 Rabbit is collecting carrots from his garden to make a feast for Pooh and friends. 
@@ -293,7 +307,139 @@ A carrot is ready to harvest if vegetable_patch[i][j] has value 'c'.
 
 Assume n = len(vegetable_patch) and m = len(vegetable_patch[0]). 0 <= i < n and 0 <= j < m.'''
 def harvest(vegetable_patch):
+	count = 0
+	for lst in vegetable_patch:
+		for item in lst:
+			if 'c' in item:
+				count += 1
+	return count
+
+'''Problem 7: Eeyore's House
+Eeyore has collected two piles of sticks to rebuild his house and needs to choose pairs of sticks whose lengths are the right proportion. 
+Write a function good_pairs() that accepts two integer arrays pile1 and pile2 where each integer represents the length of a stick. 
+The function also accepts a positive integer k. The function should return the number of good pairs.
+
+A pair (i, j) is called good if pile1[i] is divisible by pile2[j] * k. Assume 0 <= i <= len(pile1) - 1 and 0 <= j <= len(pile2) - 1.'''
+
+def good_pairs(pile1, pile2, k):
+	count = 0
+	for num1 in pile1:
+		for num2 in pile2:
+			if num1 % (num2 * k) == 0:
+				count += 1
+	return count
+
+'''Problem 8: Local Maximums
+Write a function local_maximums() that accepts an n x n integer matrix grid and returns an integer matrix local_maxes of size (n - 2) x (n - 2) such that:
+
+local_maxes[i][j] is equal to the largest value of the 3 x 3 matrix in grid centered around row i + 1 and column j + 1.
+In other words, we want to find the largest value in every contiguous 3 x 3 matrix in grid.'''
+
+def local_maximums(grid):
+	n = len(grid)
+	local_maxes = [[0] * (n - 2) for _ in range(n - 2)]
+
+	for i in range(n - 2):
+		for j in range(n - 2):
+			# extract 3x3 submatrix and ind maximum value
+			max_value = max(
+				grid[i][j], grid[i][j+1], grid[i][j+2],
+				grid[i+1][j], grid[i+1][j+1], grid[i+1][j+2],
+				grid[i+2][j], grid[i+2][j+1], grid[i+2][j+2]
+				)
+			# store max value
+			local_maxes[i][j] = max_value
+
+	return local_maxes
+
+# Advanced Problem Set Version 2
+'''Problem 1: Words Containing Character
+Write a function words_with_char() that accepts a list of strings words and a character x. 
+Return a list of indices representing the words that contain the character x. The returned list may be in any order.
+'''
+def words_with_char(words, x):
+	result = []
+	for i, word in enumerate(words):
+		if x in word:
+			result.append(i)
+	return result
+
+'''Problem 2: HulkSmash
+Write a function hulk_smash() that accepts an integer n and returns a 1-indexed string array answer where:
+
+answer[i] == "HulkSmash" if i is divisible by 3 and 5.
+answer[i] == "Hulk" if i is divisible by 3.
+answer[i] == "Smash" if i is divisible by 5.
+answer[i] == i (as a string) if none of the above conditions are true.'''
+def hulk_smash(n):
+	answer = []
+	for i in range(1, n + 1):
+		if i % 3 == 0 and i % 5 == 0:
+			answer.append("HulkSmash")
+		elif i % 3 == 0:
+			answer.append("Hulk")
+		elif i % 5 == 0:
+			answer.append("Smash") 
+		else:
+			answer.append(str(i))
+	return answer
+
+'''Problem 3: Encode
+The Riddler is planning to leave a coded message to lead Batman into a trap. 
+Write a function shuffle() that takes in a string, the Riddler's message, and encodes it using an integer array indices. 
+The message will be shuffled such that the character at the ith position in message moves to index indices[i] in the shuffled string. 
+You may assume len(message) is equal to the len(indices).'''
+
+def shuffle_encode(message, indices):
+	message_map = {}
+	indices = indices
+	for i, val in enumerate(message):
+		message_map[i] = val
+	
+	result = ''
+	for num in indices:
+		result += message_map[num]
+	return result
+
+'''Problem 4: Good Samaritan
+Superman is doing yet another good deed, using his power of flight to distribute meals for the Metropolis Food Bank. 
+He wants to distribute meals in the least number of trips possible.
+
+Metropolis Food Bank currently stores meals in n packs where the ith pack contains meals[i] meals. 
+There are also m empty boxes which can contain up to capacity[i] meals.
+
+Given an array meals of length n and capacity of size m, write a function minimum_boxes() that returns the minimum number of boxes 
+needed to redistribute the n packs of meals into boxes.
+
+Note that meals from the same pack can be distributed into different boxes.'''
+def minimum_boxes(meals, capacity):
+	total_meals = sum(meals)
+	capacity.sort(reverse=True)
+
+	box_used = 0
+	meals_distributed = 0
+
+	for box_capacity in capacity:
+		if meals_distributed >= total_meals:
+			break
+
+		meals_distributed += box_capacity
+		box_used += 1
+	return box_used
+
+'''Problem 5: Heist
+The legendary outlaw Robin Hood is looking for the target of his next heist. 
+Write a function wealthiest_customer() that accepts an m x n 2D integer matrix accounts where accounts[i][j] is the amount of money the i​​​​​​​​​​th​​​​ customer has in the j​​​​​​​​​​​th​​​​ bank. 
+Return a list [i, w] where i is the 0-based index of the wealthiest customer and w is the total wealth of the wealthiest customer.
+
+If multiple customers have the highest wealth, return the index of any customer.
+
+A customer's wealth is the amount of money they have in all their bank accounts. The richest customer is the customer that has the maximum wealth.'''
+def wealthiest_customer(accounts):
 	pass
+
+
+
 
 
 if __name__ == "__main__":
@@ -418,7 +564,7 @@ if __name__ == "__main__":
 	cards = [10, 10, 2, 2]
 	print(shuffle(cards))
 	print()
-	print('------ # Advanced Problem Set Version 1------ ')
+	print('------ # Advanced Problem Set Version 1 ------ ')
 	items = ['haycorn', 'haycorn', 'haycorn', 'hunny', 'haycorn']
 	target = 'hunny'
 	print(linear_search(items, target))
@@ -456,7 +602,6 @@ if __name__ == "__main__":
 	upper = -1
 	print(find_missing_clues(clues, lower, upper))
 	print()
-<<<<<<< HEAD
 	vegetable_patch = [
 	['x', 'c', 'x'],
 	['x', 'x', 'x'],
@@ -465,8 +610,80 @@ if __name__ == "__main__":
 	]
 	print(harvest(vegetable_patch))
 	print()
-=======
+	pile1 = [1, 3, 4]
+	pile2 = [1, 3, 4]
+	k = 1
+	print(good_pairs(pile1, pile2, k))
+	pile1 = [1, 2, 4, 12]
+	pile2 = [2, 4]
+	k = 3
+	print(good_pairs(pile1, pile2, k))
+	print()
+	grid = [
+	[9, 9, 8, 1],
+	[5, 6, 2, 6],
+	[8, 2, 6, 4],
+	[6, 2, 2, 2]
+	]
+	print(local_maximums(grid))
 
-	print("------ # Session 2 ------ ")
-	print("------ # Standard Problem Set 1 ------ ")
->>>>>>> c75822c8240a162f423371e740c9c7b966194727
+	grid = [
+		[1, 1, 1, 1, 1],
+		[1, 1, 1, 1, 1],
+		[1, 1, 2, 1, 1],
+		[1, 1, 1, 1, 1],
+		[1, 1, 1, 1, 1]
+	]
+	print(local_maximums(grid))
+	print()
+	words = ["batman", "superman"]
+	x = "a"
+	print(words_with_char(words, x))
+	words = ["black panther", "hulk", "black widow", "thor"]
+	x = "a"
+	print(words_with_char(words, x))
+	words = ["star-lord", "gamora", "groot", "rocket"]
+	x = "z"
+	print(words_with_char(words, x))
+	print()
+	n = 3
+	print(hulk_smash(n))
+	n = 5
+	print(hulk_smash(n))
+	n = 15
+	print(hulk_smash(n))
+	print()
+	message = "evil"
+	indices = [3, 1, 2, 0]
+	print(shuffle_encode(message, indices))
+	message = "findme"
+	indices = [0, 1, 2, 3, 4, 5]
+	print(shuffle_encode(message, indices))
+	print()
+	meals = [1, 3, 2]
+	capacity = [4, 3, 1, 5, 2]
+	print(minimum_boxes(meals, capacity))
+	meals = [5, 5, 5]
+	capacity = [2, 4, 2, 7]
+	print(minimum_boxes(meals, capacity))
+	print()
+	accounts = [
+		[1, 2, 3],
+		[3, 2, 1]
+	]
+	print(wealthiest_customer(accounts))
+
+	accounts = [
+		[1, 5],
+		[7, 3],
+		[3, 5]
+	]
+	print(wealthiest_customer(accounts))
+
+	accounts = [
+		[2, 8, 7],
+		[7, 1, 3],
+		[1, 9, 5]
+	]
+	print(wealthiest_customer(accounts))
+	print()
