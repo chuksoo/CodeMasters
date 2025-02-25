@@ -865,6 +865,7 @@ def most_honey(height):
 	pass
 
 
+
     
 if __name__ == "__main__":
     print("-------- # Session 1: Strings & Arrays -------- ")
@@ -1318,3 +1319,6 @@ if __name__ == "__main__":
     height = [1, 1]
     print(most_honey(height))
     print()
+    lst = [1, 2, 3, 4]
+    lst[3] = "banana"
+    print(lst)
