@@ -1,5 +1,7 @@
 # Session 2: Dictionaries
 # Standard Problem Set Version 1
+import math 
+
 '''Problem 1: Festival Lineup
 Given two lists of strings artists and set_times of length n, write a function lineup() that maps each artist to their set time.
 
@@ -304,6 +306,101 @@ def find_difference(signals1, signals2):
     diff2 = list(signals2 - signals1)
     return [diff1, diff2]
 
+# Session 2: Dictionaries & Sets
+# Standard Problem Set Version 1
+'''Problem 1: Most Endangered Species
+Imagine you are working on a wildlife conservation database. Write a function named most_endangered() that returns the species with the highest conservation 
+priority based on its population.
+
+The function should take in a list of dictionaries named species_list as a parameter. Each dictionary represents data associated with a species, 
+including its name, habitat, and wild population. The function should return the name of the species with the lowest population.
+
+If there are multiple species with the lowest population, return the species with the lowest index.'''
+def most_endangered(species_list):
+    if not species_list:
+        return None
+
+    min_val = math.inf
+    for dict in species_list:
+        if dict['population'] < min_val:
+            min_val = dict['population']
+            species = dict['name']
+    return species
+
+'''Problem 2: Identifying Endangered Species
+As part of conservation efforts, certain species are considered endangered and are represented by the string endangered_species. 
+Each character in this string denotes a different endangered species. You also have a record of all observed species in a particular region, 
+represented by the string observed_species. Each character in observed_species denotes a species observed in the region.
+
+Your task is to determine how many instances of the observed species are also considered endangered.
+
+Note: Species are case-sensitive, so "a" is considered a different species from "A".
+
+Write a function to count the number of endangered species observed.'''
+def count_endangered_species(endangered_species, observed_species):
+    from collections import Counter
+    observed_map = Counter(observed_species)
+
+    count = 0
+    for item in endangered_species:
+        if item in observed_map:
+            count += observed_map[item]
+    return count
+
+'''Problem 3: Navigating the Research Station
+In a wildlife research station, each letter of the alphabet represents a different observation point laid out in a single row. 
+Given a string station_layout of length 26 indicating the layout of these observation points (indexed from 0 to 25), 
+you start your journey at the first observation point (index 0). To make observations in a specific order represented by a string observations, 
+you need to move from one point to another.
+
+The time taken to move from one observation point to another is the absolute difference between their indices, |i - j|.
+
+Write a function that returns the total time it takes to visit all the required observation points in the given order with one movement.'''
+def navigate_research_station(station_layout, observations):
+    station_map = {str: i for i, str in enumerate(station_layout)}
+
+    curr = total_time = 0
+    for char in observations:
+        total_time += abs(station_map[char] - curr)
+        curr = station_map[char]
+    return total_time
+
+'''Problem 4: Prioritizing Endangered Species Observations
+In your work with a wildlife conservation database, you have two lists: observed_species and priority_species. The elements of priority_species 
+are distinct, and all elements in priority_species are also in observed_species. Write a function prioritize_observations() that sorts the elements 
+of observed_species such that the relative ordering of items in observed_species matches that of priority_species. Species that do not appear in 
+priority_species should be placed at the end of observed_species in ascending order.'''
+def prioritize_observations(observed_species, priority_species):
+    priority_map = {species: i for i, species in enumerate(priority_species)}
+
+    priority_part = []
+    non_priority_part = []
+    for specie in observed_species:
+        if specie in priority_map:
+            priority_part.append(specie)
+        else:
+            non_priority_part.append(specie)
+
+    # sort both parts
+    priority_part.sort(key=lambda x: priority_map[x])  # Sort by priority
+    non_priority_part.sort()  # Lexicographic order
+
+    return priority_part + non_priority_part
+
+'''Problem 5: Calculating Conservation Statistics
+You are given a 0-indexed integer array species_populations of even length, where each element represents the population of a particular species in a wildlife reserve.
+
+As long as species_populations is not empty, you must repetitively:
+1. Find the species with the minimum population and remove it.
+2. Find the species with the maximum population and remove it.
+3. Calculate the average population of the two removed species.
+The average of two numbers a and b is (a+b)/2.
+For example, the average of 200 and 300 is (200+300)/2=250.
+Return the number of distinct averages calculated using the above process.
+Note that when there is a tie for a minimum or maximum population, any can be removed.'''
+def distinct_averages(species_populations):
+    pass
+
 
 if __name__ == "__main__":
     print("-------- # Session 1: Dictionaries -------- ")
@@ -484,4 +581,56 @@ if __name__ == "__main__":
 
     print(find_difference(signals1_example1, signals2_example1)) 
     print(find_difference(signals1_example2, signals2_example2))
+    print()
+    print("-------- # Session 2: Dictionaries & Sets -------- ")
+    print("------ # Standard Problem Set Version 1 ------ ")
+    species_list = [
+    {"name": "Amur Leopard",
+     "habitat": "Temperate forests",
+     "population": 84
+    },
+    {"name": "Javan Rhino",
+     "habitat": "Tropical forests",
+     "population": 72
+    },
+    {"name": "Vaquita",
+     "habitat": "Marine",
+     "population": 10
+    }
+    ]
+
+    print(most_endangered(species_list))
+    print()
+    endangered_species1 = "aA"
+    observed_species1 = "aAAbbbb"
+
+    endangered_species2 = "z"
+    observed_species2 = "ZZ"
+
+    print(count_endangered_species(endangered_species1, observed_species1)) 
+    print(count_endangered_species(endangered_species2, observed_species2)) 
+    print()
+    station_layout1 = "pqrstuvwxyzabcdefghijklmno"
+    observations1 = "wildlife"
+
+    station_layout2 = "abcdefghijklmnopqrstuvwxyz"
+    observations2 = "cba"
+
+    print(navigate_research_station(station_layout1, observations1))  
+    print(navigate_research_station(station_layout2, observations2))
+    print()
+    observed_species1 = ["🐯", "🦁", "🦌", "🦁", "🐯", "🐘", "🐍", "🦑", "🐻", "🐯", "🐼"]
+    priority_species1 = ["🐯", "🦌", "🐘", "🦁"]  
+
+    observed_species2 = ["bluejay", "sparrow", "cardinal", "robin", "crow"]
+    priority_species2 = ["cardinal", "sparrow", "bluejay"]
+
+    print(prioritize_observations(observed_species1, priority_species1))
+    print(prioritize_observations(observed_species2, priority_species2))
+    print()
+    species_populations1 = [4,1,4,0,3,5]
+    species_populations2 = [1,100]
+
+    print(distinct_averages(species_populations1))
+    print(distinct_averages(species_populations2)) 
     print()
