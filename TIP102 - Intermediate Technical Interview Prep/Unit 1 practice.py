@@ -854,7 +854,8 @@ def sort_by_parity(nums):
     return nums
 
 '''Problem 5: Container with Most Honey
-Christopher Robin is helping Pooh construct the biggest hunny jar possible. Help his write a function that accepts an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+Christopher Robin is helping Pooh construct the biggest hunny jar possible. Help his write a function that accepts an integer array height of length n. 
+There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
 
 Find two lines that together with the x-axis form a container, such that the container contains the most honey.
 
@@ -862,9 +863,38 @@ Return the maximum amount of honey a container can store.
 
 Notice that you may not slant the container.'''
 def most_honey(height):
-	pass
+    left, right = 0, len(height) - 1
+    max_area = 0
+    while left < right:
+        width = right - left
+        container_height = min(height[left], height[right])
+        area = width * container_height
+        max_area = max(max_area, area)
+        if height[left] < height[right]:
+            left += 1
+        else:
+            right -= 1
+    return max_area
 
+'''Problem 6: Merge Intervals
+Write a function merge_intervals() that accepts an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, 
+and return an array of the non-overlapping intervals that cover all the intervals in the input.
+'''
+def merge_intervals(intervals):
+    result_lst = [intervals[0]]
+    if not intervals:
+        return result_lst
+    
+    intervals = sorted(intervals)
 
+    for i in range(1, len(intervals)):
+        if intervals[i][0] <= result_lst[-1][1]:
+            result_lst[-1][1] = max(result_lst[-1][1], intervals[i][1])
+        else:
+            result_lst.append(intervals[i])
+
+    return result_lst
+    
 
     
 if __name__ == "__main__":
@@ -1319,6 +1349,9 @@ if __name__ == "__main__":
     height = [1, 1]
     print(most_honey(height))
     print()
-    lst = [1, 2, 3, 4]
-    lst[3] = "banana"
-    print(lst)
+    intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]
+    print(merge_intervals(intervals))
+    intervals = [[1, 4], [4, 5]]
+    print(merge_intervals(intervals))
+    print()
+
