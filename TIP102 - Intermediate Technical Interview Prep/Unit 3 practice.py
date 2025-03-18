@@ -49,12 +49,6 @@ def process_performance_requests(requests):
 
     return order
 
-    
-
-
-    
-
-
 '''Problem 3: Collecting Points at Festival Booths
 At the festival, there are various booths where visitors can collect points. Each booth has a specific number of points available. 
 Use a stack to simulate the process of collecting points and return the total points collected after visiting all booths.
@@ -109,6 +103,8 @@ def merge_schedules(schedule1, schedule2):
     else:
         result += schedule2[ptr_two:]
     return ''.join(result)
+
+
 
 
 if __name__ == "__main__":
