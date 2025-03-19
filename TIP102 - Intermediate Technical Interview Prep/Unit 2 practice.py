@@ -902,4 +902,3 @@ if __name__ == "__main__":
     print(count_divisible_collections(nums1, k1))  
     print(count_divisible_collections(nums2, k2))  
     print()
-
