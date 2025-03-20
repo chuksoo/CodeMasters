@@ -172,7 +172,7 @@ def post_compare(draft1, draft2):
 
 # Standard Problem Set Version 2
 '''Problem 1: Time Needed to Stream Movies
-There are n users in a queue waiting to stream their favorite movies, where the 0th user is at the front of the queue and the (n - 1)th user is at the back of the queue.
+There are 'n' users in a queue waiting to stream their favorite movies, where the 0th user is at the front of the queue and the (n - 1)th user is at the back of the queue.
 
 You are given a 0-indexed integer array movies of length n where the number of movies that the ith user would like to stream is movies[i].
 
@@ -200,8 +200,82 @@ def time_required_to_stream(movies, k):
             queue.append((user_index, movies_left))
     return -1
           
+'''Leetcode: Top K Frequent Elements
+Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+Follow up: Your algorithm's time complexity must be better than O(n log n), where n is the array's size.'''
+def topKFrequent(nums, k):
+    import heapq
+    from collections import Counter
 
+    heap = []
+    num_freq = Counter(nums)
 
+    for num, freq in num_freq.items():
+        heapq.heappush(heap, (freq, num))
+        if len(heap) > k:
+            heapq.heappop(heap)
+
+    result = [num for freq, num in heap]
+    return result
+
+'''Problem 2: Reverse Watchlist
+You are given a list watchlist representing a list of shows sorted by popularity for a particular user. 
+The user wants to discover new shows they haven't heard of before by reversing the list to show the least popular shows first.
+
+Using the two-pointer approach, implement a function reverse_watchlist() that reverses the order of the watchlist in-place. 
+This means that the first show in the given list should become the last, the second show should become the second to last, and so on. Return the reversed list.
+
+Do not use list slicing (e.g., watchlist[::-1]) to achieve this.'''
+def reverse_watchlist(watchlist):
+    left, right = 0, len(watchlist) - 1
+    while left < right:
+        watchlist[left], watchlist[right] = watchlist[right], watchlist[left]
+        left += 1
+        right -= 1
+    return watchlist
+
+'''Problem 3: Remove All Adjacent Duplicate Shows
+You are given a string schedule representing the lineup of shows on a streaming platform, where each character in the string represents a different show. 
+A duplicate removal consists of choosing two adjacent and equal shows and removing them from the schedule.
+
+We repeatedly make duplicate removals on schedule until no further removals can be made.
+
+Return the final schedule after all such duplicate removals have been made. The answer is guaranteed to be unique.'''
+def remove_duplicate_shows(schedule):
+    stack = []
+    for char in schedule:
+        if stack and stack[-1] == char:
+            stack.pop()
+        else:
+            stack.append(char)
+    return ''.join(stack)
+
+'''Problem 4: Minimum Average of Smallest and Largest View Counts
+You manage a collection of view counts for different shows on a streaming platform. You are given an array view_counts of n integers, where n is even.
+
+You repeat the following procedure n / 2 times:
+
+Remove the show with the smallest view count, min_view_count, and the show with the largest view count, max_view_count, from view_counts.
+Add (min_view_count + max_view_count) / 2 to the list of average view counts average_views.
+Return the minimum element in average_views.'''
+def minimum_average_view_count(view_counts):
+    import heapq
+
+    min_heap = [] # heap
+    max_heap = []
+    average_views = []
+    procedure_count = len(view_counts) // 2
+
+    for num in view_counts:
+        heapq.heappush(min_heap, num)
+        heapq.heappush(max_heap, -num)
+
+    for i in range(procedure_count):
+        min_view_count = heapq.heappop(min_heap)
+        max_view_count = -heapq.heappop(max_heap)
+        average_val = (min_view_count + max_view_count) / 2
+        heapq.heappush(average_views, average_val)
+    return heapq.heappop(average_views)
 
 
 
@@ -345,6 +419,21 @@ if __name__ == "__main__":
     print(time_required_to_stream([2, 3, 2], 2)) 
     print(time_required_to_stream([5, 1, 1, 1], 0)) 
     print()
+    print(topKFrequent([1,1,1,2,2,3], 2)) # Output: [1,2]
+    print(topKFrequent([1], 1)) # Output: [1]
+    print() 
+    watchlist = ["Breaking Bad", "Stranger Things", "The Crown", "The Witcher"]
+    print(reverse_watchlist(watchlist))  
+    print()
+    print(remove_duplicate_shows("abbaca")) 
+    print(remove_duplicate_shows("azxxzy")) 
+    print()
+    print(minimum_average_view_count([7, 8, 3, 4, 15, 13, 4, 1])) 
+    print(minimum_average_view_count([1, 9, 8, 3, 10, 5])) 
+    print(minimum_average_view_count([1, 2, 3, 7, 8, 9])) 
+    print()
+
+
 
     # print("-------- # Session 2: Stacks, Queues, and Two Pointer -------- ")
     # print("------ # Standard Problem Set Version 1 ------ ")
