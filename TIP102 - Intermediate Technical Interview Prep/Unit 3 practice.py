@@ -65,23 +65,144 @@ Your Task:
 
 Read through the existing solution and add comments so that everyone in your pod understands how it works.
 Modify the solution below to use the two-pointer technique.'''
+# def engagement_boost(engagements):
+#     squared_engagements = []
+    
+#     # get squared of each engagement and store in a list
+#     for i in range(len(engagements)):
+#         squared_engagement = engagements[i] * engagements[i]
+#         squared_engagements.append((squared_engagement, i))
+    
+#     # sort the list in reverse
+#     squared_engagements.sort(reverse=True)
+  
+#     result = [0] * len(engagements)
+#     position = len(engagements) - 1
+    
+#     # 
+#     for square, original_index in squared_engagements:
+#         result[position] = square
+#         position -= 1
+    
+#     return result
+
 def engagement_boost(engagements):
-    squared_engagements = []
-    
-    for i in range(len(engagements)):
-        squared_engagement = engagements[i] * engagements[i]
-        squared_engagements.append((squared_engagement, i))
-    
-    squared_engagements.sort(reverse=True)
-    
-    result = [0] * len(engagements)
+    squared_engagement = [0] * len(engagements)
+    left, right = 0, len(engagements) - 1
     position = len(engagements) - 1
-    
-    for square, original_index in squared_engagements:
-        result[position] = square
+
+    while left < right:
+        left_square, right_square = engagements[left]**2, engagements[right]**2
+        if left_square > right_square:
+            squared_engagement[position] = left_square
+            left += 1
+        else:
+            squared_engagement[position] = right_square
+            right -= 1
         position -= 1
+    return squared_engagement
+
+'''Problem 5: Content Cleaner
+You want to make sure your posts are clean and professional. Given a string post of lowercase and uppercase English letters, 
+you want to remove any pairs of adjacent characters where one is the lowercase version of a letter and the other is the uppercase version 
+of the same letter. Keep removing such pairs until the post is clean.
+
+A clean post does not have two adjacent characters post[i] and post[i + 1] where:
+
+post[i] is a lowercase letter and post[i + 1] is the same letter in uppercase or vice-versa.
+Return the clean post.
+
+Note that an empty string is also considered clean.'''
+def clean_post(post):
+    if post == '':
+        return post
     
+    clean_stack = []
+    for char in post:
+        if clean_stack and (char.lower() == clean_stack[-1].lower()) and (char.isupper() != clean_stack[-1].isupper()):
+            clean_stack.pop()
+        else:
+            clean_stack.append(char)
+
+    return ''.join(clean_stack)
+        
+'''Problem 6: Post Editor
+You want to add a creative twist to your posts by reversing the order of characters in each word within your post while still 
+preserving whitespace and the initial word order. Given a string post, use a queue to reverse the order of characters in each word within the sentence.
+'''
+from collections import deque, Counter
+
+def edit_post(post):
+    result = ""
+    queue = deque() 
+
+    for char in post:
+        if char != ' ':
+            queue.append(char)
+        else:
+            # process word when we hit a space
+            current_word = ""
+            while queue:
+                current_word = queue.popleft() + current_word
+            result += current_word + " "
+
+    # process the last word 
+    if queue:
+        current_word = ""
+        while queue:
+            current_word = queue.popleft() + current_word
+        result += current_word
     return result
+
+'''Problem 7: Post Compare
+You often draft your posts and edit them before publishing. Given two draft strings draft1 and draft2, return true 
+if they are equal when both are typed into empty text editors. '#' means a backspace character.
+
+Note that after backspacing an empty text, the text will remain empty.'''
+def post_compare(draft1, draft2):
+    def process_draft(draft):
+        draft_stack = []
+        for char in draft:
+            if char != "#":
+                draft_stack.append(char)
+            else:
+                draft_stack.pop()
+        return draft_stack
+    return process_draft(draft1) == process_draft(draft2)
+
+# Standard Problem Set Version 2
+'''Problem 1: Time Needed to Stream Movies
+There are n users in a queue waiting to stream their favorite movies, where the 0th user is at the front of the queue and the (n - 1)th user is at the back of the queue.
+
+You are given a 0-indexed integer array movies of length n where the number of movies that the ith user would like to stream is movies[i].
+
+Each user takes exactly 1 second to stream a movie. A user can only stream 1 movie at a time and has to go back to the end of the queue (which happens instantaneously) 
+in order to stream more movies. If a user does not have any movies left to stream, they will leave the queue.
+
+Return the time taken for the user at position k (0-indexed) to finish streaming all their movies.'''
+
+def time_required_to_stream(movies, k):
+    current_time = 0
+    queue = deque()
+    for i in range(len(movies)):
+        if movies[i] > 0:
+            queue.append((i, movies[i]))
+    
+    while queue:
+        user_index, movies_left = queue.popleft()
+        current_time += 1
+        movies_left -= 1
+
+        if user_index == k and movies_left == 0:
+            return current_time
+        
+        if movies_left > 0:
+            queue.append((user_index, movies_left))
+    return -1
+          
+
+
+
 
 
 # Session 2: Stacks, Queues, and Two Pointer
@@ -209,6 +330,22 @@ if __name__ == "__main__":
     print(engagement_boost([-4, -1, 0, 3, 10]))
     print(engagement_boost([-7, -3, 2, 3, 11]))
     print()
+    print(clean_post("poOost")) 
+    print(clean_post("abBAcC")) 
+    print(clean_post("s")) 
+    print()
+    print(edit_post("Boost your engagement with these tips")) 
+    print(edit_post("Check out my latest vlog")) 
+    print()
+    print(post_compare("ab#c", "ad#c"))
+    print(post_compare("ab##", "c#d#")) 
+    print(post_compare("a#c", "b")) 
+    print()
+    print("------ # Standard Problem Set Version 1 ------ ")
+    print(time_required_to_stream([2, 3, 2], 2)) 
+    print(time_required_to_stream([5, 1, 1, 1], 0)) 
+    print()
+
     # print("-------- # Session 2: Stacks, Queues, and Two Pointer -------- ")
     # print("------ # Standard Problem Set Version 1 ------ ")
     # print(manage_stage_changes(["Schedule A", "Schedule B", "Cancel", "Schedule C", "Reschedule", "Schedule D"]))  
