@@ -277,7 +277,109 @@ def minimum_average_view_count(view_counts):
         heapq.heappush(average_views, average_val)
     return heapq.heappop(average_views)
 
+'''Problem 5: Minimum Remaining Watchlist After Removing Movies
+You have a watchlist consisting only of uppercase English letters representing movies. Each movie is represented by a unique letter.
 
+You can apply some operations to this watchlist where, in one operation, you can remove any occurrence of one of the movie pairs "AB" or "CD" from the watchlist.
+
+Return the minimum possible length of the modified watchlist that you can obtain.
+
+Note that the watchlist concatenates after removing the movie pair and could produce new "AB" or "CD" pairs.'''
+def min_remaining_watchlist(watchlist):
+    modified_watch_list = []
+    for char in watchlist:
+        if modified_watch_list and modified_watch_list[-1] == 'A' and char == 'B':
+            modified_watch_list.pop()
+        elif modified_watch_list and modified_watch_list[-1] == 'C' and char == 'D':
+            modified_watch_list.pop()
+        else:
+            modified_watch_list.append(char)
+    return len(modified_watch_list)
+    
+'''Problem 6: Apply Operations to Show Ratings
+You are given a 0-indexed array ratings of size n consisting of non-negative integers. Each integer represents the rating of a show in a streaming service.
+
+You need to apply n - 1 operations to this array where, in the ith operation (0-indexed), you will apply the following on the ith element of ratings:
+
+If ratings[i] == ratings[i + 1], then multiply ratings[i] by 2 and set ratings[i + 1] to 0. Otherwise, you skip this operation.
+After performing all the operations, shift all the 0's to the end of the array.
+
+For example, the array [1,0,2,0,0,1] after shifting all its 0's to the end, is [1,2,1,0,0,0].
+
+Return the resulting array of ratings.'''
+def apply_rating_operations(ratings):
+    for i in range(len(ratings) - 1):
+        if ratings[i] == ratings[i + 1]:
+            ratings[i] = ratings[i] * 2
+            ratings[i + 1] = 0
+    return zero_shift(ratings)
+
+def zero_shift(nums):
+    left, right = 0 , len(nums) - 1
+    while left < right:
+        if nums[left] != 0 and nums[right] == 0:
+            left += 1
+            right -= 1
+        elif nums[left] == 0 and nums[right] != 0:
+            nums[left], nums[right] = nums[right], nums[left]
+            left += 1
+            right -= 1
+        else:
+            right -= 1
+    return nums
+
+'''Problem 7: Lexicographically Smallest Watchlist
+You are managing a watchlist for a streaming service, represented by a string watchlist consisting of lowercase English letters, where each letter represents a different show.
+You are allowed to perform operations on this watchlist. In one operation, you can replace a show in watchlist with another show (i.e., another lowercase English letter).
+Your task is to make the watchlist a palindrome with the minimum number of operations possible. If there are multiple palindromes that can be made using the minimum number of operations, 
+make the lexicographically smallest one.
+
+A string a is lexicographically smaller than a string b (of the same length) if in the first position where a and b differ, 
+string a has a letter that appears earlier in the alphabet than the corresponding letter in b.
+
+Return the resulting watchlist string.
+Implement the following pseudocode:'''
+def make_smallest_watchlist(watchlist):
+    watchlist = list(watchlist)
+    left, right = 0, len(watchlist) - 1
+    while left < right:
+        if watchlist[left] != watchlist[right] and watchlist[left] > watchlist[right]:
+            watchlist[left] = watchlist[right]
+        elif watchlist[left] != watchlist[right] and watchlist[left] < watchlist[right]:
+            watchlist[right] = watchlist[left]
+        left += 1
+        right -= 1
+    return ''.join(watchlist)
+
+# Advanced Problem Set Version 1
+'''Problem 1: Arrange Guest Arrival Order
+You are organizing a prestigious event, and you must arrange the order in which guests arrive based on their status. 
+The sequence is dictated by a 0-indexed string arrival_pattern of length n, consisting of the characters 'I' meaning 
+the next guest should have a higher status than the previous one, and 'D' meaning the next guest should have a lower status than the previous one.
+
+You need to create a 0-indexed string guest_order of length n + 1 that satisfies the following conditions:
+
+guest_order consists of the digits '1' to '9', where each digit represents the guest's status and is used at most once.
+If arrival_pattern[i] == 'I', then guest_order[i] < guest_order[i + 1].
+If arrival_pattern[i] == 'D', then guest_order[i] > guest_order[i + 1].
+Return the lexicographically smallest possible string guest_order that meets the conditions.'''
+def arrange_guest_arrival_order(arrival_pattern):
+    n = len(arrival_pattern)
+    pattern = [] 
+    result_lst = []
+
+    for i in range(len(arrival_pattern) + 1):
+        pattern.append(i+1)
+        if i == n or arrival_pattern[i] == 'I':
+            while pattern:
+                top_element = pattern.pop()
+                result_lst.append(str(top_element))
+    return ''.join(result_lst)
+    
+
+
+
+    
 
 # Session 2: Stacks, Queues, and Two Pointer
 # Standard Problem Set Version 1
@@ -432,6 +534,20 @@ if __name__ == "__main__":
     print(minimum_average_view_count([1, 9, 8, 3, 10, 5])) 
     print(minimum_average_view_count([1, 2, 3, 7, 8, 9])) 
     print()
+    print(min_remaining_watchlist("ABFCACDB")) 
+    print(min_remaining_watchlist("ACBBD")) 
+    print()
+    print(apply_rating_operations([1, 2, 2, 1, 1, 0])) 
+    print(apply_rating_operations([0, 1])) 
+    print()
+    print(make_smallest_watchlist("egcfe")) 
+    print(make_smallest_watchlist("abcd")) 
+    print(make_smallest_watchlist("seven")) 
+    print()
+    print("------ # Advanced Problem Set Version 1 ------ ")
+    print(arrange_guest_arrival_order("IIIDIDDD"))  
+    print(arrange_guest_arrival_order("DDD"))  
+    
 
 
 
