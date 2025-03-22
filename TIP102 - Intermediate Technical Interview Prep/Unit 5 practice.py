@@ -542,160 +542,309 @@ def catch_fish(head):
     new_head = head.next
     return new_head
 
+'''Problem 7: Fishing Probability
+Imagine that Animal Crossing is still using a linked list to represent the order fish will appear to a player who is fishing in the river! 
+The head of the list represents the next fish that a player will catch if they keep fishing.
 
+Write a function fish_chances() that accepts the head of a list and a string fish_name. Return the probability rounded down to the nearest hundredth that the player will catch a fish of type fish_name.
+
+A function print_linked_list() which accepts the head, or first element, of a linked list and prints the list data has also been provided for testing purposes.'''
+class Node_fish:
+    def __init__(self, fish_name, next=None):
+        self.fish_name = fish_name
+        self.next = next
+
+def fish_chances(head, fish_name):
+    current = head 
+    count = 0
+    fish_val = 0
+    while current:
+        if current.fish_name == fish_name:
+            fish_val += 1
+        current = current.next
+        count += 1
+    return "{:.2f}".format(0) if fish_val == 0 else round((fish_val / count), 2)
+
+'''Problem 8: Restocking the Lake
+Imagine that Animal Crossing is still using a linked list to represent the order fish will appear to a player who is fishing! The head of the list represents the next fish that a player will catch if they keep fishing.
+
+Write a function restock() that accepts the head of a linked list and a string new_fish, and adds a Node with the fish_name new_fish to the end of the list. Return the head of the modified list.
+
+A function print_linked_list() which accepts the head, or first element, of a linked list and prints the list data has also been provided for testing purposes.'''
+class Node_fish:
+    def __init__(self, fish_name, next=None):
+        self.fish_name = fish_name
+        self.next = next
+
+def restock(head, new_fish):
+    new_node = Node_fish(new_fish)
+
+    # if list is empty, return new_node
+    if head is None:
+        return new_node
+    
+    # traverse to the end of the list
+    current = head
+    while current.next:
+        current = current.next
+
+    # add new node at the end
+    current.next = new_node
+    return head
 
 
 # Session 2: Linked Lists
 # Standard Problem Set Version 1
-# '''Problem 1: Mutual Friends
-# In the Villager class below, each villager has a friends attribute, which is a list of other villagers they are friends with.
+'''Problem 1: Mutual Friends
+In the Villager class below, each villager has a friends attribute, which is a list of other villagers they are friends with.
 
-# Write a method get_mutuals() that takes one parameter, a Villager instance new_contact, 
-# and returns a list with the name of all friends the current villager and new_contact have in common.'''
-# class Villager:
-#     def __init__(self, name, species, catchphrase):
-#         self.name = name
-#         self.species = species
-#         self.catchphrase = catchphrase
-#         self.friends = []
+Write a method get_mutuals() that takes one parameter, a Villager instance new_contact, 
+and returns a list with the name of all friends the current villager and new_contact have in common.'''
+class Villager_two:
+    def __init__(self, name, species, catchphrase):
+        self.name = name
+        self.species = species
+        self.catchphrase = catchphrase
+        self.friends = []
 
-#     def get_mutuals(self, new_contact):
-#         return [friend.name for friend in new_contact.friends if friend in self.friends]
+    def get_mutuals(self, new_contact):
+        return [friend.name for friend in new_contact.friends if friend in self.friends]
 
-# bob = Villager("Bob", "Cat", "pthhhpth")
-# marshal = Villager("Marshal", "Squirrel", "sulky")
-# ankha = Villager("Ankha", "Cat", "me meow")
-# fauna = Villager("Fauna", "Deer", "dearie")
-# raymond = Villager("Raymond", "Cat", "crisp")
-# stitches = Villager("Stitches", "Cub", "stuffin")
+'''Problem 2: Linked Up
+A linked list is a data structure that, similar to a normal list or array, allows us to store pieces of data sequentially. 
+The key difference is how the elements are stored in memory.
 
-# bob.friends = [stitches, raymond, fauna]
-# marshal.friends = [raymond, ankha, fauna]
-# print(bob.get_mutuals(marshal))
+In a normal list, elements are stored in adjacent memory locations. If we know the location of the first element, we can easily access any other element in the list.
+In a linked list, individual elements, called nodes, are not stored in sequential memory locations. 
+Instead, each node stores a reference or pointer to the next node in the list, allowing us to traverse the list.
 
-# ankha.friends = [marshal]
-# print(bob.get_mutuals(ankha))
-# print()
+Connect the provided node instances below to create the linked list kk_slider -> harriet -> saharah -> isabelle.
+A function print_linked_list() which accepts the head, or first element, of a linked list and prints the values of the list has also been provided for testing purposes.'''
 
-# '''Problem 2: Linked Up
-# A linked list is a data structure that, similar to a normal list or array, allows us to store pieces of data sequentially. 
-# The key difference is how the elements are stored in memory.
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
 
-# In a normal list, elements are stored in adjacent memory locations. If we know the location of the first element, we can easily access any other element in the list.
-# In a linked list, individual elements, called nodes, are not stored in sequential memory locations. 
-# Instead, each node stores a reference or pointer to the next node in the list, allowing us to traverse the list.
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
 
-# Connect the provided node instances below to create the linked list kk_slider -> harriet -> saharah -> isabelle.
-# A function print_linked_list() which accepts the head, or first element, of a linked list and prints the values of the list has also been provided for testing purposes.'''
+'''Problem 3: Daily Tasks
+Imagine a linked list used as a daily task list where each node represents a task. 
+Write a function add_task() that takes in the head of a linked list and adds a new node to the front of the task list.
 
-# class Node:
-#     def __init__(self, value, next=None):
-#         self.value = value
-#         self.next = next
+The function should insert a new Node object with the value task as the new head of the linked list and return the new node.
 
-# # For testing
-# def print_linked_list(head):
-#     current = head
-#     while current:
-#         print(current.value, end=" -> " if current.next else "\n")
-#         current = current.next
+Note: The "head" of a linked list is the first element in the linked list. It is equivalent to lst[0] of a normal list.'''
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
 
-# kk_slider = Node("K.K. Slider")
-# harriet = Node("Harriet")
-# saharah = Node("Saharah")
-# isabelle = Node("Isabelle")
-# kk_slider.next = harriet
-# harriet.next = saharah
-# saharah.next = isabelle
-# print_linked_list(kk_slider)
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
 
-# '''Problem 3: Daily Tasks
-# Imagine a linked list used as a daily task list where each node represents a task. 
-# Write a function add_task() that takes in the head of a linked list and adds a new node to the front of the task list.
+def add_first(head, task):
+    new_node = Node(task)
+    new_node.next = head
+    return new_node
 
-# The function should insert a new Node object with the value task as the new head of the linked list and return the new node.
+'''Problem 4: Halve List
+Write a function halve_list() that accepts the head of a linked list whose values are integers and divides each value by two. Return the head of the modified list.'''
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
 
-# Note: The "head" of a linked list is the first element in the linked list. It is equivalent to lst[0] of a normal list.'''
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
 
-# class Node:
-#     def __init__(self, value, next=None):
-#         self.value = value
-#         self.next = next
+def halve_list(head):
+    if head is None:
+        return head 
+    
+    current = head
+    current.value = head.value / 2
+    while current.next:
+        current = current.next 
+        current.value = current.value / 2
+    return head
 
-# # For testing
-# def print_linked_list(head):
-#     current = head
-#     while current:
-#         print(current.value, end=" -> " if current.next else "\n")
-#         current = current.next
+'''Problem 5: Remove Last
+Write a function delete_tail() that accepts the head of a linked list and removes the last node in the list. Return the head of the modified list.
 
-# def add_first(head, task):
-#     new_node = Node(task)
-#     new_node.next = head
-#     return new_node
+Note: The "tail" of a list is the last element in the linked list. It is equivalent to lst[-1] in a normal list.'''
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
 
-# task_1 = Node("shake tree")
-# task_2 = Node("dig fossils")
-# task_3 = Node("catch bugs")
-# task_1.next = task_2
-# task_2.next = task_3
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
 
-# # Linked List: shake tree -> dig fossils -> catch bugs
-# print_linked_list(add_first(task_1, "check turnip prices"))
+def delete_tail(head):
+    if head is None:
+        return None
+    
+    if head.next is None:
+        return None 
 
-# '''Problem 4: Halve List
-# Write a function halve_list() that accepts the head of a linked list whose values are integers and divides each value by two. Return the head of the modified list.'''
-# class Node:
-#     def __init__(self, value, next=None):
-#         self.value = value
-#         self.next = next
+    # find the second to the last node
+    current = head
+    while current.next.next:
+        current = current.next
+    
+    current.next = None
+    return head
 
-# # For testing
-# def print_linked_list(head):
-#     current = head
-#     while current:
-#         print(current.value, end=" -> " if current.next else "\n")
-#         current = current.next
+'''Problem 6: Find Minimum in Linked List
+Write a function find_min() that takes in the head of a linked list and returns the minimum value in the linked list. You can assume the linked list will contain only numeric values.'''
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
 
-# def halve_list(head):
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
 
+def find_min(head):
+    # base case
+    if head is None:
+        return head 
+    
+    min_val = float('inf')
+    current = head 
+    while current:
+        if current.value < min_val:
+            min_val = current.value 
+        current = current.next
+    return min_val
 
-# node_one = Node(5)
-# node_two = Node(6)
-# node_three = Node(7)
-# node_one.next = node_two
-# node_two.next = node_three
+'''Problem 7: Remove From Inventory
+Imagine a linked list used to store a player's inventory. Write a function delete_item() that takes in the head of a linked list and a value item as parameters.
 
-# # Input List: 5 -> 6 -> 7
-# print_linked_list(halve_list(node_one))
+The function should remove the first node it finds in the linked list with the value item and return the head of the modified list. If no node can be found with the value item, return the list unchanged.'''
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
 
-# '''Problem 5: Remove Last
-# Write a function delete_tail() that accepts the head of a linked list and removes the last node in the list. Return the head of the modified list.
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
 
-# Note: The "tail" of a list is the last element in the linked list. It is equivalent to lst[-1] in a normal list.'''
-# class Node:
-#     def __init__(self, value, next=None):
-#         self.value = value
-#         self.next = next
+def delete_item(head, item):
+    if head is None:
+        return None
+    
+    if head.value == item:
+        return head.next
 
-# # For testing
-# def print_linked_list(head):
-#     current = head
-#     while current:
-#         print(current.value, end=" -> " if current.next else "\n")
-#         current = current.next
+    prev = head
+    current = head.next
+    while current is not None:
+        if current.value == item:
+            prev.next = current.next
+            break
+        prev = current
+        current = current.next
+    return head
+    
+'''Problem 8: Move Tail to Front of Linked List
+Write a function tail_to_head() that takes in the head of a linked list as a parameter and moves the tail of the linked list to the front.'''
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
 
-# def delete_tail(head):
-#     pass
+# For testing
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.value, end=" -> " if current.next else "\n")
+        current = current.next
 
-# butterfly = Node("Common Butterfly")
-# ladybug = Node("Ladybug")
-# beetle = Node("Scarab Beetle")
-# butterfly.next = ladybug
-# ladybug.next = beetle
+def tail_to_head(head):
+    # if the list is empty or has only one node, nothing changes
+    if head is None or head.next is None:
+        return head 
+    
+    # traverse to the second-to-last node
+    current = head
+    while current.next.next is not None:
+        current = current.next
+        
+    # 'current' now points to the second-to-last node
+    tail = current.next
+    current.next = None
 
-# # Input List: butterfly -> ladybug -> beetle
-# print_linked_list(delete_tail(butterfly))
+    # move the old tail to the front
+    tail.next = head
+    head = tail
+    return head
+
+'''Problem 9: Create Double Links
+One of the drawbacks of a linked list is that it's difficult to go backwards because each Node only knows about the Node in front of it. (E.g., A -> B -> C)
+
+A doubly linked list solves this problem! Instead of just having a next attribute, a doubly linked list also has a prev attribute that points to the Node before it. (E.g., A <-> B <-> C)
+
+Update the Node constructor below so that the code creates a doubly linked list with head <-> tail.'''
+class Node:
+    def __init__(self, value, next=None, prev=None):
+        self.value = value
+        self.next = next
+        self.prev = prev
+
+# link them in both directions
+head = Node("Isabelle")
+tail = Node("K.K. Slider")
+
+# demonstrate the bidirectional links
+head.next = tail
+tail.prev = head
+
+'''Problem 10: Print Backwards
+Write a function print_reverse() that takes in the tail of a doubly linked list as a parameter.
+
+It should print out the values of the linked list in reverse order, each separated by a space.'''
+class Node:
+    def __init__(self, value, next=None, prev=None):
+        self.value = value
+        self.next = next
+        self.prev = prev
+
+def print_reverse(tail):
+    # if list is empty, return nothing
+    if tail is None:
+        return 
+    
+    current = tail
+    while current is not None:
+        print(current.value, end="  " if current.prev else "\n")
+        current = current.prev
 
 
 
@@ -897,3 +1046,116 @@ if __name__ == "__main__":
     print_linked_list_fish(fish_list)
     print_linked_list_fish(catch_fish(fish_list))
     print(catch_fish(empty_list))
+    print()
+    print("Problem 7: Fishing Probability")
+    fish_list = Node_fish("Carp", Node_fish("Dace", Node_fish("Cherry Salmon")))
+    print(fish_chances(fish_list, "Dace"))
+    print(fish_chances(fish_list, "Rainbow Trout"))
+    print()
+    print("Problem 8: Restocking the Lake")
+    fish_list = Node_fish("Carp", Node_fish("Dace", Node_fish("Cherry Salmon")))
+    print_linked_list_fish(restock(fish_list, "Rainbow Trout"))
+    print()
+    print("-------- # Session 2: Linked Lists -------- ")
+    print("------ # Standard Problem Set Version 1 ------ ")
+    print("Problem 1: Mutual Friends")
+    bob = Villager_two("Bob", "Cat", "pthhhpth")
+    marshal = Villager_two("Marshal", "Squirrel", "sulky")
+    ankha = Villager_two("Ankha", "Cat", "me meow")
+    fauna = Villager_two("Fauna", "Deer", "dearie")
+    raymond = Villager_two("Raymond", "Cat", "crisp")
+    stitches = Villager_two("Stitches", "Cub", "stuffin")
+
+    bob.friends = [stitches, raymond, fauna]
+    marshal.friends = [raymond, ankha, fauna]
+    print(bob.get_mutuals(marshal))
+
+    ankha.friends = [marshal]
+    print(bob.get_mutuals(ankha))
+    print()
+    print("Problem 2: Linked Up")
+    kk_slider = Node("K.K. Slider")
+    harriet = Node("Harriet")
+    saharah = Node("Saharah")
+    isabelle = Node("Isabelle")
+    kk_slider.next = harriet
+    harriet.next = saharah
+    saharah.next = isabelle
+    print_linked_list(kk_slider)
+    print()
+    print("Problem 3: Daily Tasks")
+    task_1 = Node("shake tree")
+    task_2 = Node("dig fossils")
+    task_3 = Node("catch bugs")
+    task_1.next = task_2
+    task_2.next = task_3
+    # Linked List: shake tree -> dig fossils -> catch bugs
+    print_linked_list(add_first(task_1, "check turnip prices"))
+    print()
+    print("Problem 4: Halve List")
+    node_one = Node(5)
+    node_two = Node(6)
+    node_three = Node(7)
+    node_one.next = node_two
+    node_two.next = node_three
+    # Input List: 5 -> 6 -> 7
+    print_linked_list(halve_list(node_one))
+    print()
+    print("Problem 5: Remove Last")
+    butterfly = Node("Common Butterfly")
+    ladybug = Node("Ladybug")
+    beetle = Node("Scarab Beetle")
+    butterfly.next = ladybug
+    ladybug.next = beetle
+    # Input List: butterfly -> ladybug -> beetle
+    print_linked_list(delete_tail(butterfly))
+    print()
+    print("Problem 6: Find Minimum in Linked List")
+    head1 = Node(5, Node(6, Node(7, Node(8))))
+    head2 = Node(8, Node(5, Node(6, Node(7))))
+
+    # Linked List: 5 -> 6 -> 7 -> 8
+    print(find_min(head1))
+
+    # Linked List: 8 -> 5 -> 6 -> 7
+    print(find_min(head2))
+    print()
+    print("Problem 7: Remove From Inventory")
+    slingshot = Node("Slingshot")
+    peaches = Node("Peaches")
+    beetle = Node("Scarab Beetle")
+    slingshot.next = peaches
+    peaches.next = beetle
+    # Linked List: slingshot -> peaches -> beetle
+    print_linked_list(delete_item(slingshot, "Peaches"))
+    # Linked List: slingshot -> beetle
+    print_linked_list(delete_item(slingshot, "Triceratops Torso"))
+    print()
+    print("Problem 8: Move Tail to Front of Linked List")
+    daisy = Node("Daisy")
+    mario = Node("Mario")
+    toad = Node("Toad") 
+    peach = Node("Peach")
+    daisy.next = mario
+    mario.next = toad
+    toad.next = peach
+
+    # Linked List: Daisy -> Mario -> Toad -> Peach
+    print_linked_list(tail_to_head(daisy))
+    print()
+    print("Problem 9: Create Double Links")
+    print(head.value, "<->", head.next.value)
+    print(tail.prev.value, "<->", tail.value)
+    print()
+    print("Problem 10: Print Backwards")
+    isabelle = Node("Isabelle")
+    kk_slider = Node("K.K. Slider")
+    saharah = Node("Saharah")
+    isabelle.next = kk_slider
+    kk_slider.next = saharah
+    saharah.prev = kk_slider
+    kk_slider.prev = isabelle
+
+    # Linked List: Isabelle <-> K.K. Slider <-> Saharah
+    print_reverse(saharah)
+    print()
