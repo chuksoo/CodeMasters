@@ -498,7 +498,6 @@ Evaluate the time and space complexity of your solution. Define your variables a
 def game_result(head):
 
     odd_point = even_point = 0
-    previous = head
     current = head
     while current is not None and current.next is not None:
         even_value = current.value
@@ -539,6 +538,392 @@ def cycle_start(path_start):
         slow = slow.next
         fast = fast.next
     return slow.value
+
+'''Problem 3: Fastest Wins!
+Contestants, today's challenge is to sort a linked list of items the fastest! The catch - you have to follow a certain technique or you're disqualified from the round. 
+You’ll start with an unsorted lineup, and with each step, you’ll move one item at a time into its proper position until the entire lineup is perfectly ordered.
+
+Given the head of a linked list, sort the items using the following procedure:
+
+Start with the first item: The sorted section initially contains just the first item. The rest of the items await their turn in the unsorted section.
+Pick and Place: For each step, pick the next item from the unsorted section, find its correct spot in the sorted section, and place it there.
+Repeat: Continue until all items are in the sorted section.
+Return the head of the sorted linked list.
+
+As a preview, here is a graphical example of the required technique (also known as the insertion sort algorithm). 
+The partially sorted list (black) initially contains only the first element in the list. One element (red) is removed from the input data and inserted in-place into the sorted list with each iteration.
+
+Sorting unordered list of integers using insertion sort technique
+
+When you have finished your sorting, receive bonus points for evaluating the time and space complexity of your solution. 
+To get full points, you must define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''
+
+def sort_list(head):
+    if head is None or head.next is None:
+        return head
+    
+    sorted_head = head
+    unsorted_node = head.next 
+
+    sorted_head.next = None
+
+    while unsorted_node is not None:
+        next_unsorted = unsorted_node.next 
+        if unsorted_node.value < sorted_head.value:
+            unsorted_node.next = sorted_head
+            sorted_head = unsorted_node
+        else:
+            current_sorted = sorted_head
+            while current_sorted.next is not None and current_sorted.next.value < unsorted_node.value:
+                current_sorted = current_sorted.next
+            unsorted_node.next = current_sorted.next
+            current_sorted.next = unsorted_node
+        unsorted_node = next_unsorted
+    return sorted_head
+            
+'''Problem 4: Calculate Prize Money
+In the game show, contestants win prize money for each of the challenges they participate in. Write a function get_total_prize() that accepts the heads of two non-empty linked lists, prize_a and prize_b, representing two non-negative integers. The digits are stored in reverse order and each node represents a single digit. The function should add the two numbers and return the sum of the prize money as a linked list.
+
+The digits of the sum should also be stored in reverse order with each node containing a single digit.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''
+def add_two_numbers(head_a, head_b):
+    dummy_node = Node(0)
+    current = dummy_node
+    carry = 0
+
+    while head_a or head_b or carry:
+        val_1 = head_a.value if head_a else 0
+        val_2 = head_b.value if head_b else 0
+
+        # compute total sum
+        total = val_1 + val_2 + carry
+
+        # compute carry
+        carry = total // 10
+
+        # get remainder as new digit
+        new_digit = total % 10
+
+        # create node with compute sum
+        current.next = Node(new_digit)
+        current = current.next
+
+        if head_a:
+            head_a = head_a.next
+        if head_b:
+            head_b = head_b.next 
+
+    return dummy_node.next
+
+'''Problem 5: Next Contestant to Beat
+You are given the head of a linked list contestant_scores with n nodes where each node represents the current score of a contestant in the game.
+
+For each node in the list, find the value of the contestant with the next highest score. That is, for each score, find the value of the first node that is next to it and has a strictly larger value than it.
+
+Return an integer array answer where answer[i] is the value of the next greater node of the ith node (1-indexed). If the ith node does not have a next greater node, set answer[i] = 0.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''   
+def next_highest_scoring_contestant(contestant_scores):
+    # get array from linked list
+    values = []
+    current = contestant_scores
+
+    while current is not None:
+        values.append(current.value)
+        current = current.next
+
+    # create result arrays filed with zeros 
+    result = [0] * len(values)
+    stack = []
+
+    for i, value in enumerate(values):
+        while stack and values[stack[-1]] < value:
+            index = stack.pop()
+            result[index] = value
+        stack.append(i)
+    return result
+
+###################################################
+# Session 2: Linked Lists II
+###################################################
+# Standard Problem Set Version 1
+# -------------------------------------------------
+'''Problem 1: Wild Goose Chase
+You're a detective and have been given an anonymous tip on your latest case, but something about it seems fishy - you suspect the clue might be a red herring meant to send you around in circles. 
+Write a function is_circular() that accepts the head of a singly linked list clues and returns True if the tail of the linked list points at the head of the linked list. Otherwise, return False.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''
+def is_circular(clues):
+    if clues is None or clues.next is None:
+        return False
+    
+    slow = fast = clues
+    while fast is not None and fast.next is not None:
+        slow  = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True 
+    return False
+
+'''Problem 2: Breaking the Cycle
+All the clues that lead us in circles are false evidence we need to purge! Given the head of a linked list evidence, clean up the evidence list by identifying any false clues. 
+Write a function collect_false_evidence() that returns an array containing all values that are part of any cycle in evidence. Return the values in any order.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''
+def collect_false_evidence(evidence):
+    false_evidence = []
+    
+    if evidence is None or evidence.next is None:
+        return false_evidence
+    
+    slow = fast = evidence
+    is_circular = False
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            is_circular = True
+            break 
+    
+    if is_circular == False:
+        return false_evidence
+    
+    fast = evidence
+    while fast != slow:
+        slow = slow.next
+        fast = fast.next
+    cycle_start = fast
+
+    current = cycle_start
+    while True:
+        false_evidence.append(current.value)
+        current = current.next
+        if current == cycle_start:
+            break
+    return false_evidence
+
+'''Problem 3: Prioritizing Suspects
+You've identified a list of suspect, but time is limited and you won't be able to question all of them today. Write a function partition() to help prioritize the order in which you question suspects. 
+Given the head of a linked list of integers suspect_ratings, where each integer represents the suspiciousness of the a given suspect and a value threshold, 
+partition the linked list such that all nodes with values greater than threshold come before nodes with values less than or equal to threshold.
+
+Return the head of the partitioned list.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''
+def partition(suspect_ratings, threshold):
+    # create dummy nodes for low and high partitions
+    low_value_node = Node(0)
+    high_value_node = Node(0)
+
+    # create pointers to build list
+    low_head = low_value_node
+    high_head = high_value_node
+
+    # traverse the list
+    current = suspect_ratings
+    while current is not None:
+        if current.value <= threshold:
+            low_head.next = current
+            low_head = low_head.next
+        else:
+            high_head.next = current
+            high_head = high_head.next
+        current = current.next
+
+    # terminate low partition list
+    low_head.next = None
+    # combine low head after high head
+    high_head.next = low_value_node.next
+    return high_value_node.next
+
+'''Problem 4: Puzzling it Out
+A new witness has emerged and provided a new account of events the night of the crime. Given the heads of two sorted linked lists, known_timeline and witness_timeline, each representing a numbered sequence of events,
+merge the two timelines into one sorted sequence of events. The resulting linked list should be made by splicing together the nodes of the first two timelines. Return the head of the merged timeline.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''
+def merge_timelines(known_timeline, witness_timeline):
+    if known_timeline is None and witness_timeline is not None:
+        return witness_timeline
+    elif known_timeline is not None and witness_timeline is None:
+        return known_timeline
+    
+    merged_node = Node(0)
+    merged = merged_node
+
+    node_one = known_timeline
+    node_two = witness_timeline
+    while node_one and node_two:
+        if node_one.value <= node_two.value:
+            merged.next = node_one
+            node_one = node_one.next
+        else:
+            merged.next = node_two
+            node_two = node_two.next
+        merged = merged.next
+        
+    if node_one is not None:
+        merged.next = node_one
+    else:
+        merged.next = node_two
+    return merged_node.next
+
+'''Problem 5: A New Perspective
+You're having a tough time making a break in the case, and it's time to shake things up to gain a new perspective. Given the head of a linked list of numbered pieces of evidence evidence, and a non-negative integer k, 
+rotate the list to the right by k places. Return the head of the rotated list.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''
+def rotate_right(head, k):
+    if head is None:
+        return head
+    
+    # get length of linked list
+    length = 0
+    current = head
+    tail = None
+    while current:
+        tail = current
+        current = current.next
+        length += 1
+    
+    # compute effective rotation
+    k = k % length
+    if k == 0:
+        return head
+    
+    # connect tail to head to form a circular list
+    tail.next = head 
+
+    # find new tail
+    split_point = length - k
+    current = head 
+    for i in range(1, split_point):
+        current = current.next
+    
+    new_head = current.next
+    current.next = None
+    return new_head
+
+'''Problem 6: Adding Up the Evidence
+You have all your evidence, and it's time to sum it to the final answer! You are given the heads of two non-empty non-empty linked lists head_a and head_b representing two non-negative integers. 
+The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+
+The digits of the sum should also be stored in reverse order with each node containing a single digit.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''
+def add_two_numbers(head_a, head_b):
+    if head_a is None:
+        return head_b
+    elif head_b is None:
+        return head_a
+    
+    dummy_node = Node(0)
+    current = dummy_node
+    carry = 0
+
+    while head_a or head_b or carry:
+        val1 = head_a.value if head_a else 0
+        val2 = head_b.value if head_b else 0
+
+        total = val1 + val2 + carry
+        new_digit = total % 10
+        carry = total // 10
+        current.next = Node(new_digit)
+        current = current.next
+
+        if head_a:
+            head_a = head_a.next
+        if head_b:
+            head_b = head_b.next
+    return dummy_node.next
+
+# -------------------------------------------------
+# Standard Problem Set Version 2
+# -------------------------------------------------
+'''Problem 1: Measuring Loop Length
+As a trail worker, you've been tasked with measuring the length of a loop trail that circles back to its starting point. 
+Given the head of a linked list trailhead where each node represents a trail marker and the last marker points back to the first marker, return the length of the trail. 
+Assume the length of the trail is equal to the number of markers.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''
+def trail_length(trailhead):
+    if trailhead is None:
+        return 0
+    if  trailhead.next is None:
+        return 1
+    
+    current = trailhead
+    temp_node = current
+    count = 1
+
+    while current:
+        current = current.next
+        count += 1
+        if current.next == temp_node:
+            break 
+    return count
+
+'''Problem 2: Clearing the Path
+While maintaining a trail, you discover that some parts of the path loop back on themselves, creating confusing detours. Given the head of a linked list that may contain cycles trailhead, 
+write a function that removes any loops/cycles in the trail ensuring a clear, straightforward path. Return the head of the cleared trail.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''
+def clear_trail(trailhead):
+    if trailhead is None:
+        return trailhead
+    
+    slow = fast = trailhead
+    is_cycle = False
+
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            is_cycle = True
+            break
+
+    if not is_cycle:
+        return trailhead
+    
+    fast = trailhead
+    while fast != slow:
+        slow = slow.next
+        fast = fast.next
+        
+    cycle_start = slow
+
+    current = cycle_start
+    while current.next != cycle_start:
+        current = current.next 
+
+    current.next = None
+    return trailhead
+
+'''Problem 3: Removing Duplicate Markers
+When clearing an old trail, you notice some markers have been placed more than once, confusing hikers. Given the head of a sorted linked list of numbered trail markers, trailhead, 
+write a function that removes all duplicate markers, keeping only the unique ones. Return the head of the updated trail.'''
+def remove_duplicate_markers(trailhead):
+    if trailhead is None:
+        return trailhead
+    
+    dummy = Node(0)
+    dummy.next = trailhead
+
+    prev = dummy    
+    current = trailhead
+
+    while current is not None:
+        if current.next and current.value == current.next.value:
+            while current.next and current.value == current.next.value:
+                current = current.next
+            prev.next = current.next
+            current = current.next
+        else:
+            prev = current
+            current = current.next
+    return dummy.next
+
+
 
 
 
@@ -693,6 +1078,101 @@ if __name__ == "__main__":
     path_start = Node('Start', Node('Point 1', Node('Point 2', Node('Point 3'))))
     path_start.next.next.next.next = path_start.next
     print(cycle_start(path_start))
+    print()
+    print("Problem 3: Fastest Wins!")
+    head1 = Node(4, Node(2, Node(1, Node(3))))
+    head2 = Node(-1, Node(5, Node(3, Node(4, Node(0)))))
 
+    print_linked_list_value(sort_list(head1))
+    print_linked_list_value(sort_list(head2))
+    print()
+    print("Problem 4: Calculate Prize Money")
+    head_a = Node(2, Node(4, Node(3))) # 342
+    head_b = Node(5, Node(6, Node(4))) # 465
+    print_linked_list_value(add_two_numbers(head_a, head_b))
+    print()
+    print("Problem 5: Next Contestant to Beat")
+    contestant_scores1 = Node(2, Node(1, Node(5)))
+    contestant_scores2 = Node(2, Node(7, Node(4, Node(3, Node(5)))))
 
-    
+    print(next_highest_scoring_contestant(contestant_scores1))
+    print(next_highest_scoring_contestant(contestant_scores2))
+    print()
+    print("-------- # Session 2: Linked Lists II -------- ")
+    print("------ # Standard Problem Set Version 1 ------ ")
+    print("Problem 1: Wild Goose Chase")
+    clue1 = Node("The stolen goods are at an abandoned warehouse")
+    clue2 = Node("The mayor is accepting bribes")
+    clue3 = Node("They dumped their disguise in the lake")
+    clue1.next = clue2
+    clue2.next = clue3
+    clue3.next = clue1
+    print(is_circular(clue1))
+    print()
+    print("Problem 2: Breaking the Cycle")
+    clue1 = Node("Unmarked sedan seen near the crime scene")
+    clue2 = Node("The stolen goods are at an abandoned warehouse")
+    clue3 = Node("The mayor is accepting bribes")
+    clue4 = Node("They dumped their disguise in the lake")
+    clue1.next = clue2
+    clue2.next = clue3
+    clue3.next = clue4
+    clue4.next = clue2
+
+    clue5 = Node("A masked figure was seen fleeing the scene")
+    clue6 = Node("Footprints lead to the nearby woods")
+    clue7 = Node("A broken window was found at the back")
+    clue5.next = clue6
+    clue6.next = clue7
+
+    print(collect_false_evidence(clue1))
+    print(collect_false_evidence(clue5))
+    print()
+    print("Problem 3: Prioritizing Suspects")
+    suspect_ratings = Node(1, Node(4, Node(3, Node(2, Node(5, Node(2))))))
+    print("Before partitioning")
+    print_linked_list_value(suspect_ratings)
+    print("After Partitioning")
+    print_linked_list_value(partition(suspect_ratings, 3))
+    print()
+    print("Problem 4: Puzzling it Out")
+    known_timeline = Node(1, Node(2, Node(4)))
+    witness_timeline = Node(1, Node(3, Node(4)))
+    print_linked_list_value(merge_timelines(known_timeline, witness_timeline))
+    print()
+    print("Problem 5: A New Perspective")
+    evidence_list1 = Node(1, Node(2, Node(3, Node(4, Node(5)))))
+    evidence_list2 = Node(0, Node(1, Node(2)))
+    print_linked_list_value(rotate_right(evidence_list1, 2))
+    print_linked_list_value(rotate_right(evidence_list2, 4))
+    print()
+    print("Problem 6: Adding Up the Evidence")
+    head_a = Node(2, Node(4, Node(3))) # 342
+    head_b = Node(5, Node(6, Node(4))) # 465
+    print_linked_list_value(add_two_numbers(head_a, head_b))
+    print()
+    print("------ # Standard Problem Set Version 2 ------ ")
+    print("Problem 1: Measuring Loop Length")
+    marker1 = Node("Marker 1")
+    marker2 = Node("Marker 2")
+    marker3 = Node("Marker 3")
+    marker1.next = marker2
+    marker2.next = marker3
+    marker3.next = marker1
+    print(trail_length(marker1))
+    print()
+    print("Problem 2: Clearing the Path")
+    marker1 = Node("Trailhead")
+    marker2 = Node("Trail Fork")
+    marker3 = Node("The Falls")
+    marker4 = Node("Peak")
+    marker1.next = marker2
+    marker2.next = marker3
+    marker3.next = marker4
+    marker4.next = marker2
+    print_linked_list_value(clear_trail(marker1))
+    print()
+    print("Problem 3: Removing Duplicate Markers")
+    trailhead = Node(1, Node(2, Node(3, Node(3, Node(4)))))
+    print_linked_list_value(remove_duplicate_markers(trailhead))
+    print()
