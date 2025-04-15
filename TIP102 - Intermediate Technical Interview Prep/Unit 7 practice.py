@@ -214,7 +214,8 @@ def get_village_class_recursive(population):
     else:
         return 1 + get_village_class_recursive(abs(population) // 10)
 
-'''In a faraway kingdom, a castle is surrounded by multiple defensive walls, where each wall is nested within another. 
+'''Problem 2: Counting the Castle Walls
+In a faraway kingdom, a castle is surrounded by multiple defensive walls, where each wall is nested within another. 
 Given a list of lists walls where each list [] represents a wall, write a recursive function count_walls() that returns the total number of walls.
 
 Evaluate the time complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time complexity.
@@ -255,7 +256,7 @@ def is_palindrome(name):
     if len(name) == 1:
         return True
     
-    # compare irst and last character
+    # compare first and last character
     if name[0] != name[-1]:
         return False
     else:
@@ -287,8 +288,195 @@ def is_increasing_path(path):
     if path[0] > path[1]:
         return False
     return is_increasing_path(path[1:])
-    
 
+'''Problem 7: Finding the Longest Winning Streak
+In the kingdom's grand tournament, knights compete in a series of challenges. A knight's performance in the challenge is represented by a string challenges, 
+where a success is represented by an S and each other outcome (like a draw or loss) is represented by an "O". Write a recursive function to find the length of 
+the longest consecutive streak of successful challenges ("S").
+
+Evaluate the time complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time complexity.'''
+def longest_streak(frames, current_length=0, max_length=0):
+    # base case
+    if not frames:
+        return max_length
+    
+    # recursive case
+    if frames[0] == 'S':
+        new_length = current_length + 1
+        new_max_length = max(max_length, new_length)
+    else:
+        new_length = 0
+        new_max_length = new_length
+    
+    return longest_streak(frames[1:], new_length, new_max_length)
+
+'''Problem 8: Weaving Spells
+A magician can double a spell's power if they merge two incantations together. Given the heads of two linked lists spell_a and spell_b 
+where each node in the lists contains a spell segment, write a recursive function weave_spells() that weaves spells in the pattern:
+
+a1 -> b1 -> a2 -> b2 -> a3 -> b3 -> ...'''
+def weave_spells_recursive(spell_a, spell_b):
+    if spell_a is None:
+        return spell_b
+    
+    if spell_b is None:
+        return spell_a
+
+    if spell_a.value <= spell_b.value:
+        spell_a.next = weave_spells_recursive(spell_a.next, spell_b)
+        return spell_a
+    else:
+        spell_b.next = weave_spells_recursive(spell_a, spell_b.next)
+        return spell_b
+    
+'''Problem 9: Weaving Spells II
+Below is an iterative solution to the weaving_spells() function from the previous problem. Compare your recursive solution to the iterative solution below.
+
+Discuss with your podmates. Which solution do you prefer?'''
+def weave_spells_iterative(spell_a, spell_b):
+    # If either list is empty, return the other
+    if not spell_a:
+        return spell_b
+    if not spell_b:
+        return spell_a
+
+    # Start with the first node of spell_a
+    head = spell_a
+    
+    # Loop through both lists until one is exhausted
+    while spell_a and spell_b:
+        # Store the next pointers
+        next_a = spell_a.next
+        next_b = spell_b.next
+        
+        # Weave spell_b after spell_a
+        spell_a.next = spell_b
+        
+        # If there's more in spell_a, weave it after spell_b
+        if next_a:
+            spell_b.next = next_a
+        
+        # Move to the next nodes
+        spell_a = next_a
+        spell_b = next_b
+
+    # Return the head of the new woven list
+    return head
+
+# -------------------------------------------------
+# Advanced Problem Set Version 1
+# -------------------------------------------------
+'''Problem 1: Counting the Layers of a Sandwich
+You're working at a deli, and need to count the layers of a sandwich to make sure you made the order correctly. 
+Each layer is represented by a nested list. Given a list of lists sandwich where each list [] represents a sandwich layer, 
+write a recursive function count_layers() that returns the total number of sandwich layers.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your 
+solution has the stated time and space complexity.'''
+def count_layers(sandwich):
+    count = 1
+    for item in sandwich:
+        if isinstance(item, list):
+            count = count + count_layers(item)
+        else:
+            continue
+    return count
+
+'''Problem 2: Reversing Deli Orders
+The deli counter is busy, and orders have piled up. To serve the last customer first, you need to reverse the order of the deli orders. 
+Given a string orders where each individual order is separated by a single space, write a recursive function reverse_orders() that 
+returns a new string with the orders reversed.
+
+Evaluate the time and space complexity of your solution. Define your variables and
+ provide a rationale for why you believe your 
+solution has the stated time and space complexity.'''
+def reverse_orders(orders):
+    # base case
+    if not orders or " " not in orders:
+        return orders
+    
+    tokens = orders.split(" ")
+    if len(tokens) == 1:
+        return tokens[0]
+    
+    # recursive case
+    first_token = tokens[0]
+    rest_string = " ".join(tokens[1:])
+
+    return reverse_orders(rest_string) + " " + first_token
+
+'''Problem 3: Sharing the Coffee
+The deli staff is in desperate need of caffeine to keep them going through their shift and has decided to divide the coffee supply equally among themselves. 
+Each batch of coffee is stored in containers of different sizes. Write a recursive function can_split_coffee() that accepts a list of integers coffee 
+representing the volume of each batch of coffee and returns True if the coffee can be split evenly by volume among n staff and False otherwise.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''
+def can_split_coffee(coffee, n):
+    total_volume = sum(coffee) 
+    
+    # If the total volume isn't divisible by n, return False
+    if total_volume % n != 0:
+        return False
+    
+    target = total_volume // n 
+    return can_divide(coffee, n, target, 0)
+
+def can_divide(coffee, n, target, current_sum):
+    if n == 0:
+        return True  # If we've successfully partitioned for all staff
+    if current_sum == target:  # Current staff member has a full share
+        return can_divide(coffee, n - 1, target, 0)  # Move to the next staff member
+    if not coffee:
+        return False  # No more coffee batches to partition
+
+    # Try including the first batch of coffee in the current partition
+    include = can_divide(coffee[1:], n, target, current_sum + coffee[0]) 
+    
+    # Try excluding the first batch of coffee from the current partition
+    exclude = can_divide(coffee[1:], n, target, current_sum) 
+    
+    return include or exclude
+
+'''Problem 4: Super Sandwich
+A regular at the deli has requested a new order made by merging two different sandwiches on the menu together. Given the heads of two linked lists sandwich_a and sandwich_b 
+where each node in the lists contains a spell segment, write a recursive function merge_orders() that merges the two sandwiches together in the pattern:
+
+a1 -> b1 -> a2 -> b2 -> a3 -> b3 -> ...
+
+Return the head of the merged sandwich.
+
+Evaluate the time and space complexity of your solution. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity.'''
+def merge_orders_iterative(sandwich_a, sandwich_b):
+    # base case
+    if sandwich_a is None:
+        return sandwich_b
+    if sandwich_b is None:
+        return sandwich_a
+    
+    dummy = Node('dummy')
+    current = dummy
+
+    while sandwich_a is not None and sandwich_b is not None:
+        # attach current node from sandwich_a
+        current.next = sandwich_a
+        sandwich_a = sandwich_a.next
+        current = current.next
+
+        # attach current node from sandwich_b
+        current.next = sandwich_b
+        sandwich_b = sandwich_b.next
+        current = current.next
+
+    # attach any remaining node
+    if sandwich_a is not None:
+        current.next = sandwich_a
+    else:
+        current.next = sandwich_b
+    return dummy.next
+
+def merge_orders_recursive(sandwich_a, sandwich_b):
+    # base case
+    pass
 
 
 
@@ -380,11 +568,11 @@ def is_increasing_path(path):
 
 # ------------------------------------------------
 # Sorting algorithm
-# Selection Sort Algorithm
-def findSmallest(arr): 
+# Selection Sort Algorithm - Total Time - (O(N^2))
+def findSmallest(arr): # Time - O(N)
   smallest = arr[0]       
   smallest_index = 0      
-  for i in range(1, len(arr)):
+  for i in range(1, len(arr)): 
     if arr[i] < smallest:
       smallest = arr[i]
       smallest_index = i
@@ -393,9 +581,9 @@ def findSmallest(arr):
 def selectionSort(arr):                      
   newArr = []
   copiedArr = list(arr) 
-  for i in range(len(copiedArr)):
-      smallest = findSmallest(copiedArr)     
-      newArr.append(copiedArr.pop(smallest))
+  for i in range(len(copiedArr)):           # O(N)
+      smallest = findSmallest(copiedArr)    # O(N)
+      newArr.append(copiedArr.pop(smallest)) 
   return newArr
 
 #--------------------------------------------------
@@ -473,8 +661,53 @@ if __name__ == "__main__":
     print(is_increasing_path([1, 2, 3, 4, 5]))
     print(is_increasing_path([3, 5, 2, 8]))
     print()
+    print("Problem 7: Finding the Longest Winning Streak")
+    print(longest_streak("SSOSSS"))
+    print(longest_streak("SOSOSOSO"))
+    print()
+    print("Problem 8: Weaving Spells")
+    spell_a = Node('A', Node('C', Node('E')))
+    spell_b = Node('B', Node('D', Node('F')))
+    print_linked_list(weave_spells_recursive(spell_a, spell_b))
+    print()
+    print("Problem 9: Weaving Spells II")
+    spell_a = Node('A', Node('C', Node('E')))
+    spell_b = Node('B', Node('D', Node('F')))
+    print_linked_list(weave_spells_iterative(spell_a, spell_b))
+    print()
+    print("------ # Advanced Problem Set Version 1 ------ ")
+    print('Problem 1: Counting the Layers of a Sandwich')
+    sandwich1 = ["bread", ["lettuce", ["tomato", ["bread"]]]]
+    sandwich2 = ["bread", ["cheese", ["ham", ["mustard", ["bread"]]]]]
+    print(count_layers(sandwich1))
+    print(count_layers(sandwich2))
+    print()
+    print("Problem 2: Reversing Deli Orders")
+    print(reverse_orders("Bagel Sandwich Coffee"))
+    print()
+    print("Problem 3: Sharing the Coffee")
+    print(can_split_coffee([4, 4, 8], 2))
+    print(can_split_coffee([5, 10, 15], 4))
+    print()
+    print("Problem 4: Super Sandwich")
+    sandwich_a1 = Node('Bacon', Node('Lettuce', Node('Tomato')))
+    sandwich_b = Node('Turkey', Node('Cheese', Node('Mayo')))
+    sandwich_a2 = Node('Bacon', Node('Lettuce', Node('Tomato')))
+    sandwich_c = Node('Bread')
+    print_linked_list(merge_orders_iterative(sandwich_a1, sandwich_b))
+    print_linked_list(merge_orders_iterative(sandwich_a2, sandwich_c))
+    print()
+    sandwich_a1 = Node('Bacon', Node('Lettuce', Node('Tomato')))
+    sandwich_b = Node('Turkey', Node('Cheese', Node('Mayo')))
+    sandwich_a2 = Node('Bacon', Node('Lettuce', Node('Tomato')))
+    sandwich_c = Node('Bread')
+    print_linked_list(merge_orders_recursive(sandwich_a1, sandwich_b))
+    print_linked_list(merge_orders_recursive(sandwich_a2, sandwich_c))
+    print()
+    print()
+    print()
     print("Selection Sort Algorithm")
     print(selectionSort([5, 3, 6, 2, 10]))
-    print()
+    print(7 // 10)
 
 
