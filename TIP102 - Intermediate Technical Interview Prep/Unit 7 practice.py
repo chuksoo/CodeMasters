@@ -476,7 +476,100 @@ def merge_orders_iterative(sandwich_a, sandwich_b):
 
 def merge_orders_recursive(sandwich_a, sandwich_b):
     # base case
+    if sandwich_a is None:
+        return sandwich_b
+    if sandwich_b is None:
+        return sandwich_a
+    
+    # recursive step
+    a_next = sandwich_a.next
+    b_next = sandwich_b.next 
+
+    # splice the two current nodes together
+    sandwich_a.next = sandwich_b 
+
+    # recursively merge the remainders
+    sandwich_b.next = merge_orders_recursive(a_next, b_next) 
+
+    # return the head of newly merged list
+    return sandwich_a
+
+'''Problem 5: Super Sandwich II
+Below is an iterative solution to the merge_orders() function from the previous problem. Compare your recursive solution to the iterative solution below.
+
+Discuss with your podmates. Which solution do you prefer? How do they compare on time complexity? Space complexity?'''
+def merge_orders(sandwich_a, sandwich_b):
+    # If either list is empty, return the other
+    if not sandwich_a:
+        return sandwich_b
+    if not sandwich_b:
+        return sandwich_a
+
+    # Start with the first node of sandwich_a
+    head = sandwich_a
+    
+    # Loop through both lists until one is exhausted
+    while sandwich_a and sandwich_b:
+        # Store the next pointers
+        next_a = sandwich_a.next
+        next_b = sandwich_b.next
+        
+        # Merge sandwich_b after sandwich_a
+        sandwich_a.next = sandwich_b
+        
+        # If there's more in sandwich_a, add it after sandwich_b
+        if sandwich_a:
+            sandwich_b.next = next_a
+        
+        # Move to the next nodes
+        sandwich_a = next_a
+        sandwich_b = next_b
+
+    # Return the head of the new merged list
+    return head
+
+'''Problem 6: Ternary Expression
+Given a string expression representing arbitrarily nested ternary expressions, evaluate the expression, and return its result as a string.
+
+You can always assume that the given expression is valid and only contains digits, '?', ':', 'T', and 'F' where 'T' is True and 'F' is False. 
+All the numbers in the expression are one-digit numbers (i.e., in the range [0, 9]).
+
+Ternary expressions use the following syntax:
+
+condition ? true_choice : false_choice
+
+condition is evaluate first and determines which choice to make.
+true_choice is taken if condition evaluates to True
+false_choice is taken if condition evaluates to False
+The conditional expressions group right-to-left, and the result of the expression will always evaluate to either a digit, 'T' or 'F'.
+
+We have provided an iterative solution that uses an explicit stack. Implement a recursive solution evaluate_ternary_expression_recursive().'''
+def evaluate_ternary_expression_iterative(expression):
+    stack = []
+    
+    # Traverse the expression from right to left
+    for i in range(len(expression) - 1, -1, -1):
+        char = expression[i]
+        
+        if stack and stack[-1] == '?':
+            stack.pop()  # Remove the '?'
+            true_expr = stack.pop()  # True expression
+            stack.pop()  # Remove the ':'
+            false_expr = stack.pop()  # False expression
+            
+            if char == 'T':
+                stack.append(true_expr)
+            else:
+                stack.append(false_expr)
+        else:
+            stack.append(char)
+    
+    return stack[0]
+
+def evaluate_ternary_expression_recursive(expression):
     pass
+
+
 
 
 
@@ -704,6 +797,11 @@ if __name__ == "__main__":
     print_linked_list(merge_orders_recursive(sandwich_a1, sandwich_b))
     print_linked_list(merge_orders_recursive(sandwich_a2, sandwich_c))
     print()
+    print("Problem 5: Super Sandwich II")
+    sandwich_a2 = Node('Bacon', Node('Lettuce', Node('Tomato')))
+    sandwich_c = Node('Bread')
+    print_linked_list(merge_orders(sandwich_a2, sandwich_c))
+
     print()
     print()
     print("Selection Sort Algorithm")
