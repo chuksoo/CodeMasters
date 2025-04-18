@@ -138,8 +138,8 @@ def survey_tree(root):
     postorder_dfs = []
 
     if root:
-        postorder_dfs = postorder_dfs + survey_tree(root.left)
-        postorder_dfs = postorder_dfs + survey_tree(root.right)
+        postorder_dfs += survey_tree(root.left)
+        postorder_dfs += survey_tree(root.right)
         postorder_dfs.append(root.val)
     return postorder_dfs
 
@@ -166,6 +166,32 @@ def harvest_berries(root, threshold):
 
     return total
 
+'''Problem 8: Flower Fields
+You're looking for the perfect bloom to add to your bouquet of flowers. Given the root of a binary tree representing flower options, and a target flower flower, 
+return True if the bloom you are looking for each exists in the tree and False otherwise.
+
+Evaluate the time complexity of your function. Define your variables and provide a rationale for why you believe your solution has the stated time complexity. 
+Assume the input tree is balanced when calculating time complexity.'''
+def find_flower(root, flower):
+    # breadth first search (bfs) or level-order traversal
+    if root is None:
+        return False
+    
+    queue = deque()
+    queue.append(root)
+
+    while queue:
+        popped_node = queue.popleft()
+        if popped_node.val == flower:
+            return True
+        if popped_node.left:
+            queue.append(popped_node.left)
+        if popped_node.right:
+            queue.append(popped_node.right)
+
+    return False
+
+    
 
 
 
@@ -253,6 +279,21 @@ if __name__ == "__main__":
     5    8    20
     """
     bush = TreeNode(4, TreeNode(10, TreeNode(5), TreeNode(8)), TreeNode(6, None, TreeNode(20)))
-
     print(harvest_berries(bush, 6))
     print(harvest_berries(bush, 30))
+    print()
+    print("Problem 8: Flower Fields")
+    """
+            Rose
+            /    \
+        /      \
+        Lily     Daisy
+        /    \        \
+    Orchid  Lilac    Dahlia
+    """
+
+    flower_field = TreeNode("Rose", 
+                            TreeNode("Lily", TreeNode("Orchid"), TreeNode("Lilac")),
+                                    TreeNode("Daisy", None, TreeNode("Dahlia")))
+    print(find_flower(flower_field, "Lilac"))
+    print(find_flower(flower_field, "Hibiscus"))    
