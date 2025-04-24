@@ -366,9 +366,40 @@ def ocean_depth_bfs(root):
         depth += 1
     return depth 
 
-        
+# -------------------------------------------------
+# Advanced Problem Set Version 2
+# -------------------------------------------------       
+'''Problem 1: Ivy Cutting
+You have a trailing ivy plant represented by a binary tree. You want to take a cutting to start a new plant using the rightmost vine in the plant. 
+Given the root of the plant, return a list with the value of each node in the path from the root node to the rightmost leaf node.
 
+Evaluate the time and space complexity of your function. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity. 
+Assume the input tree is balanced when calculating time and space complexity.'''
+def right_vine_recur(root):
+    # pattern is preorder dfs  
+    rightmost = []
+    if root:
+        rightmost.append(root.val)
+        rightmost += right_vine_recur(root.right)
+    return rightmost
 
+'''Problem 2: Ivy Cutting II
+If you implemented right_vine() iteratively in the previous problem, implement it recursively. If you implemented it recursively, implement it iteratively.
+
+Evaluate the time and space complexity of your function. Define your variables and provide a rationale for why you believe your solution has the stated time and space complexity. 
+Assume the input tree is balanced when calculating time and space complexity.'''
+def right_vine_iter(root):
+    if root is None:
+        return []
+    
+    if root.right is None:
+        return [root.val]
+    
+    right_most = []
+    while root:
+        right_most.append(root.val)
+        root = root.right
+    return right_most
 
 
 
@@ -631,6 +662,35 @@ if __name__ == "__main__":
     print(ocean_depth_bfs(ocean))
     print(ocean_depth_bfs(tidal_zones))
     print()
+    print("------ # Advanced Problem Set Version 2 ------ ")
+    print("Problem 1: Ivy Cutting")
+    """
+            Root
+        /      \
+        Node1    Node2
+    /         /    \
+    Leaf1    Leaf2  Leaf3
+    """
+    ivy1 = TreeNode("Root", 
+                    TreeNode("Node1", TreeNode("Leaf1")),
+                    TreeNode("Node2", TreeNode("Leaf2"), TreeNode("Leaf3")))
+
+    """
+        Root
+        /  
+        Node1
+        /
+    Leaf1  
+    """
+    ivy2 = TreeNode("Root", TreeNode("Node1", TreeNode("Leaf1")))
+
+    print(right_vine_recur(ivy1))
+    print(right_vine_recur(ivy2))
+    print()
+    print("Problem 2: Ivy Cutting II")
+    print(right_vine_iter(ivy1))
+    print(right_vine_iter(ivy2))    
+
 
 
 
