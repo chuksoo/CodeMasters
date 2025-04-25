@@ -367,7 +367,7 @@ def ocean_depth_bfs(root):
     return depth 
 
 # -------------------------------------------------
-# Advanced Problem Set Version 2
+# Advanced Problem Set Version 1
 # -------------------------------------------------       
 '''Problem 1: Ivy Cutting
 You have a trailing ivy plant represented by a binary tree. You want to take a cutting to start a new plant using the rightmost vine in the plant. 
@@ -400,6 +400,126 @@ def right_vine_iter(root):
         right_most.append(root.val)
         root = root.right
     return right_most
+
+'''Problem 3: Pruning Plans
+You have a large overgrown Magnolia tree that's in desperate need of some pruning. Before you can prune the tree, 
+you need to do a full survey of the tree to evaluate which sections need to be pruned.
+
+Given the root of a binary tree representing the magnolia, return a list of the values of each node using a postorder traversal. 
+In a postorder traversal, you explore the left subtree first, then the right subtree, and finally the root. Postorder traversals 
+are often used when deleting nodes from a tree.
+
+Evaluate the time and space complexity of your function. Define your variables and provide a rationale for why you believe your 
+solution has the stated time and space complexity. Assume the input tree is balanced when calculating time and space complexity.'''
+def survey_tree(root):
+    postorder_bfs = []
+    if root:
+        postorder_bfs += survey_tree(root.left)
+        postorder_bfs += survey_tree(root.right)
+        postorder_bfs.append(root.val)
+    return postorder_bfs
+
+
+'''Problem 4: Sum Inventory
+A local flower shop stores its inventory in a binary tree, where each node represents their current stock of a flower variety. 
+Given the root of a binary tree inventory, return the sum of all the flower stock in the store.
+
+Evaluate the time and space complexity of your function. Define your variables and provide a rationale for 
+why you believe your solution has the stated time and space complexity. Assume the input tree is balanced when calculating time and space complexity.'''
+def sum_inventory(inventory):
+    inventory_count = 0
+    if inventory:
+        inventory_count += inventory.val
+        inventory_count += sum_inventory(inventory.left)
+        inventory_count += sum_inventory(inventory.right)
+    return inventory_count
+ 
+'''Problem 5: Calculating Yield II
+You have a fruit tree represented as a binary tree. Given the root of the tree, evaluate the amount of fruit your tree will yield this year. The tree has the following form:
+
+Leaf nodes have an integer value.
+Non-leaf nodes have a string value of either "+", "-", "*", or "-".
+The yield of a the tree is calculated as follows:
+
+If the node is a leaf node, the yield is the value of the node.
+Otherwise evaluate the node's two children and apply the mathematical operation of its value with the children's evaluations.
+Return the result of evaluating the root node.
+
+Evaluate the time and space complexity of your function. Define your variables and provide a rationale for why you believe your 
+solution has the stated time and space complexity. Assume the input tree is balanced when calculating time and space complexity.'''
+def calculate_yield_fruit(apple_tree):
+    # base case
+    if apple_tree.left is None and apple_tree.right is None:
+        return apple_tree.val
+    
+    # recusive case
+    left_val = calculate_yield_fruit(apple_tree.left)
+    right_val = calculate_yield_fruit(apple_tree.right)
+    
+    # apply node's operator
+    if apple_tree.val == '+':
+        return left_val + right_val
+    elif apple_tree.val == '-':
+        return left_val - right_val
+    elif apple_tree.val == '*':
+        return left_val * right_val
+    else:
+        return None
+    
+'''Problem 6: Plant Classifications
+Given the root of a binary tree used to classify plants where each level of the tree represents a higher degree of specificity, 
+return an array with the most specific plant classification categories (aka the leaf node values). Leaf nodes are nodes with no children.
+
+Evaluate the time and space complexity of your function. Define your variables and provide a rationale for why you believe your 
+solution has the stated time and space complexity. Assume the input tree is balanced when calculating time and space complexity.'''
+def get_most_specific(taxonomy):
+    if taxonomy is None:
+        return []
+    
+    # base case
+    if taxonomy.left is None and taxonomy.right is None:
+        return [taxonomy.val]
+    
+    # recursive case
+    leaf_nodes = []
+    if taxonomy.left:
+        leaf_nodes.extend(get_most_specific(taxonomy.left))
+    if taxonomy.right:
+        leaf_nodes.extend(get_most_specific(taxonomy.right))
+    return leaf_nodes
+
+'''Problem 7: Count Old Growth Trees
+Given the root of a binary tree where each node represents the age of a tree in a forest, write a function count_old_growth() 
+that returns the number of old growth trees in the forest. A tree is considered old growth if it has age greater than threshold.
+
+Evaluate the time and space complexity of your function. Define your variables and provide a rationale for why you believe your 
+solution has the stated time and space complexity. Assume the input tree is balanced when calculating time and space complexity.'''
+def count_old_growth(root, threshold):
+    count = 0
+
+    if root is None:
+        return count
+    # base case
+    if root.val > threshold:
+        count += 1
+    
+    count += count_old_growth(root.left, threshold) 
+    count += count_old_growth(root.right, threshold)
+    return count
+
+'''Problem 8: Twinning Trees
+Given the roots of two trees root1 and root2, return True if the trees have identical structures and values and False otherwise.
+
+Evaluate the time and space complexity of your function. Define your variables and provide a rationale for why you believe your 
+solution has the stated time and space complexity. Assume the input tree is balanced when calculating time and space complexity.'''
+def is_identical(root1, root2):
+    # base case
+    if root1.val != root2.val:
+        return False
+    
+    # recursive case
+    if root1 and root2:
+        
 
 
 
@@ -689,8 +809,105 @@ if __name__ == "__main__":
     print()
     print("Problem 2: Ivy Cutting II")
     print(right_vine_iter(ivy1))
-    print(right_vine_iter(ivy2))    
+    print(right_vine_iter(ivy2))  
+    print()
+    print("Problem 3: Pruning Plans")  
+    """
+            Root
+        /      \
+        Node1    Node2
+    /         /    \
+    Leaf1    Leaf2  Leaf3
+    """
 
+    magnolia = TreeNode("Root", 
+                    TreeNode("Node1", TreeNode("Leaf1")),
+                            TreeNode("Node2", TreeNode("Leaf2"), TreeNode("Leaf3")))
+    print(survey_tree(magnolia))
+    print()
+    print("Problem 4: Sum Inventory")
+    """
+        40
+        /  \
+    5   10
+    /   /  \
+    20   1   30
+    """
 
+    inventory = TreeNode(40, 
+                        TreeNode(5, TreeNode(20)),
+                                TreeNode(10, TreeNode(1), TreeNode(30)))
+
+    print(sum_inventory(inventory))   
+    print()
+    print("Problem 5: Calculating Yield II") 
+    """
+        +
+       / \ 
+      /   \
+     -     *
+    / \   / \
+    4   2 10  2
+    """
+    root = TreeNode("+")
+    root.left = TreeNode("-")
+    root.right = TreeNode("*")
+    root.left.left = TreeNode(4)
+    root.left.right = TreeNode(2)
+    root.right.left = TreeNode(10)
+    root.right.right = TreeNode(2)
+    print(calculate_yield_fruit(root))
+    print()
+    print("Problem 6: Plant Classifications")
+    """
+            Plantae
+            /       \
+            /         \
+            /           \ 
+    Non-flowering     Flowering
+    /      \       /        \
+    Mosses   Ferns Gymnosperms Angiosperms
+                                /     \
+                            Monocots  Dicots
+    """
+    plant_taxonomy = TreeNode("Plantae", 
+                            TreeNode("Non-flowering", TreeNode("Mosses"), TreeNode("Ferns")),
+                                    TreeNode("Flowering", TreeNode("Gymnosperms"), 
+                                            TreeNode("Angiosperms", TreeNode("Monocots"), TreeNode("Dicots"))))
+    print(get_most_specific(plant_taxonomy))    
+    print()
+    print("Problem 7: Count Old Growth Trees")
+    """
+        100
+        /  \
+        /    \
+    1200  1500
+    /     /  \
+    20    700  2600
+    """
+    forest = TreeNode(100, 
+                    TreeNode(1200, TreeNode(20)),
+                            TreeNode(1500, TreeNode(700), TreeNode(2600)))
+    print(count_old_growth(forest, 1000))
+    print()
+    print("Problem 8: Twinning Trees")
+    """
+        1                1
+        / \              / \
+        2   3            2   3  
+    """
+    root1 = TreeNode(1, TreeNode(2), TreeNode(3))
+    root2 = TreeNode(1, TreeNode(2), TreeNode(3))
+
+    """
+        1                1
+        /                  \
+        2                    2  
+    """
+    root3 = TreeNode(1, TreeNode(2))
+    root4 = TreeNode(1, None, TreeNode(2))
+    print(is_identical(root1, root2))
+    print(is_identical(root3, root4))
+    print()
 
 
