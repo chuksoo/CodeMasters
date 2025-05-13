@@ -3,6 +3,8 @@
 ###################################################
 # Standard Problem Set Version 1
 # -------------------------------------------------
+from collections import deque 
+
 '''Problem 1: Grafting Apples
 You are grafting different varieties of apple onto the same root tree can produce many different varieties of apples! 
 Given the following TreeNode class, create the binary tree depicted below. The text representing each node should should be used as the value.
@@ -24,21 +26,20 @@ class TreeNode:
 
 def print_tree(root):
     if not root:
-        return []
-
+        return "Empty"
+    result = []
     queue = deque([root])
-    output = []
-
     while queue:
-        curr = queue.popleft()
-        output.append(curr.val)
-
-        if curr.left:
-            queue.append(curr.left)
-        if curr.right:
-            queue.append(curr.right)
-    
-    return output
+        node = queue.popleft()
+        if node:
+            result.append(node.val)
+            queue.append(node.left)
+            queue.append(node.right)
+        else:
+            result.append(None)
+    while result and result[-1] is None:
+        result.pop()
+    print(result)
 
 root = TreeNode("Trunk")
 root.left = TreeNode("Mcintosh")
@@ -514,14 +515,223 @@ Evaluate the time and space complexity of your function. Define your variables a
 solution has the stated time and space complexity. Assume the input tree is balanced when calculating time and space complexity.'''
 def is_identical(root1, root2):
     # base case
+    # if both are empty
+    if root1 is None and root2 is None:
+        return True
+    
+    # if one empty, one not
+    if root1 is None or root2 is None:
+        return False
+    
+    # both must have same value and identical subtree
     if root1.val != root2.val:
         return False
     
     # recursive case
-    if root1 and root2:
+    left_path = is_identical(root1.left, root2.left)
+    right_path = is_identical(root1.right, root2.right)
+    return left_path and right_path
         
 
+###################################################
+# Session 2: Binary Trees
+###################################################
+# Standard Problem Set Version 1
+# -------------------------------------------------
 
+# Tree Node class
+class TreeNode_key:
+  def __init__(self, value, key=None, left=None, right=None):
+      self.key = key
+      self.val = value
+      self.left = left
+      self.right = right
+
+def build_tree(values):
+  if not values:
+      return None
+
+  def get_key_value(item):
+      if isinstance(item, tuple):
+          return item[0], item[1]
+      else:
+          return None, item
+
+  key, value = get_key_value(values[0])
+  root = TreeNode_key(value, key)
+  queue = deque([root])
+  index = 1
+
+  while queue:
+      node = queue.popleft()
+      if index < len(values) and values[index] is not None:
+          left_key, left_value = get_key_value(values[index])
+          node.left = TreeNode_key(left_value, left_key)
+          queue.append(node.left)
+      index += 1
+      if index < len(values) and values[index] is not None:
+          right_key, right_value = get_key_value(values[index])
+          node.right = TreeNode_key(right_value, right_key)
+          queue.append(node.right)
+      index += 1
+
+  return root
+
+'''Problem 1: Monstera Madness
+Given the root of a binary tree where each node represents the number of splits in a leaf of a Monstera plant, return the number of Monstera leaves that have an odd number of splits.
+
+Evaluate the time complexity of your function. Define your variables and provide a rationale for why you believe your solution has the stated time complexity.'''
+def count_odd_splits(root):
+    count = 0
+
+    # base case
+    if root is None:
+        return count 
+    
+    if root.val % 2 != 0:
+        count += 1
+
+    count += count_odd_splits(root.left)
+    count += count_odd_splits(root.right)
+    return count
+
+'''Problem 2: Flower Finding
+You are looking to buy a new flower plant for your garden. The nursery you visit stores its inventory in a binary search tree (BST) where each node represents a plant in the store. 
+The plants are organized according to their names (vals) in alphabetical order in the BST.
+
+Given the root of the binary search tree inventory and a target flower name, write a function find_flower() that returns True if the flower is present in the garden and False otherwise.
+
+Evaluate the time complexity of your function. Define your variables and provide a rationale for why you believe your solution has the stated time complexity. Assume the input tree is balanced when calculating time complexity.'''
+def find_flower_2(inventory, name):
+    # base case
+    if not inventory:
+        return False
+    
+    if inventory.val == name:
+        return True
+    elif name < inventory.val:
+        return find_flower_2(inventory.left, name)
+    else:
+        return find_flower_2(inventory.right, name)
+    
+'''Problem 3: Flower Finding II
+Consider the following function non_bst_find_flower() which accepts the root of a binary tree inventory and a flower name, and returns True if a flower (node) with name exists in the binary tree. 
+Unlike the previous problem, this tree is not a binary search tree.
+
+Compare your solution to find_flower() in Problem 2 to the following solution. Discuss with your group: How is the code different? Why?
+What is the time complexity of non_bst_find_flower()? How does it compare to the time complexity of find_flower() in Problem 2?
+How would the time complexity of find_flower() from Problem 2 change if the tree inventory was not balanced?'''
+def non_bst_find_flower(root, name):
+    if root is None:
+        return False
+    
+    if root.val == name:
+        return True
+
+    return non_bst_find_flower(root.left, name) or non_bst_find_flower(root.right, name)
+
+'''Problem 4: Adding a New Plant to the Collection
+You have just purchased a new houseplant and are excited to add it to your collection! Your collection is meticulously organized using a Binary Search Tree (BST) 
+where each node in the tree represents a houseplant in your collection, and houseplants are organized alphabetically by name (val).
+
+Given the root of your BST collection and a new houseplant name, insert a new node with value name into your collection. Return the root of your updated collection. 
+If another plant with name already exists in the tree, add the new node in the existing node's right subtree.
+
+Evaluate the time complexity of your function. Define your variables and provide a rationale for why you believe your solution has the stated time complexity. Assume the input tree is balanced when calculating time complexity.'''
+def add_plant(collection, name):
+    if collection is None:
+        return TreeNode(name)
+    
+    if name < collection.val:
+        collection.left = add_plant(collection.left, name)
+    else:
+        collection.right = add_plant(collection.right, name)
+    return collection
+
+'''Problem 5: Sorting Plants by Rarity
+You are going to a plant swap where you can exchange cuttings of your plants for new plants from other plant enthusiasts. You want to bring a mix of cuttings from both common and rare plants in your collection. 
+You track your plant collection in a BST where each node has a key and a val. The val contains the plant name, and the key is an integer representing the plant's rarity. Plants are organized in the BST by their key.
+
+To help choose which plants to bring, write a function sort_plants() which takes in the BST root collection and returns an array of plant nodes as tuples in the form (key, val) sorted from least to most rare. 
+Sorted order can be achieved by performing an inorder traversal of the BST.'''
+def sort_plants(collection):
+    inorder_bfs = []
+    if collection:
+        inorder_bfs += sort_plants(collection.left)
+        inorder_bfs.append((collection.key, collection.val))
+        inorder_bfs += sort_plants(collection.right)
+    return inorder_bfs
+
+'''Problem 6: Finding a New Plant Within Budget
+You are looking for a new plant and have a max budget. The plant store that you are shopping at stores their inventory in a BST where each node has a key representing the price of the plant and value cntains the plant's name. 
+Plants are ordered by their prices. You want to find a plant that is close to but lower than your budget.
+
+Given the root of the BST inventory and an integer budget, write a function pick_plant() that returns the plant with the highest price below budget. If no plant with a price strictly below budget exists, the function should return None.'''
+def pick_plant(root, budget):
+    current = root
+    best_node = None
+    # traverse the tree
+    while current is not None:
+        if current.key < budget:
+            # update best node if current node is better
+            if best_node is None or current.key > best_node.key:
+                best_node = current
+            current = current.right
+        else:
+            # current is too expensive, move left
+            current = current.left
+    return best_node.val if best_node else None
+
+'''Problem 7: Remove Plant
+A plant in your houseplant collection has become infested with aphids, and unfortunately you need to throw it out. Given the root of a BST collection where each node represents a plant in your collection, 
+and a plant name, remove the plant node with value name from the collection. Return the root of the modified collection. Plants are organized alphabetically in the tree by value.
+
+If the node with name has two children in the tree, replace it with its inorder predecessor (rightmost node in its left subtree). You do not need to maintain a balanced tree.
+
+Pseudocode has been provided for you.
+
+Evaluate the time complexity of your function. Define your variables and provide a rationale for why you believe your solution has the stated time complexity. Assume the input tree is balanced when calculating time complexity.'''
+def remove_plant(collection, name):
+    if collection is None:
+        return collection
+    
+    # Step 1: Find the node to be removed
+    if name < collection.val:
+        collection.left = remove_plant(collection.left, name)
+    elif name > collection.val:
+        collection.right = remove_plant(collection.right, name)
+    else:
+        # Node with the same name found
+        # Step 2: Node has no children (leaf node)
+        if collection.left is None and collection.right is None:
+            return None
+        
+        # Step 3: Node has one child
+        if collection.left is None:
+            return collection.right
+        elif collection.right is None:
+            return collection.left
+        
+        # Step 4: Node has two children
+        # Find the inorder predecessor (rightmost node in the left subtree)
+        predecessor = max_value_node(collection.left)
+        # Replace the node's value with the predecessor's value
+        collection.val = predecessor.val
+        # Remove the inorder predecessor
+        collection.left = remove_plant(collection.left, predecessor.val)
+    
+    return collection
+
+def max_value_node(node):
+    current = node
+    while current.right:
+        current = current.right
+    return current
+
+    
+
+
+    
 
 
 
@@ -909,5 +1119,109 @@ if __name__ == "__main__":
     print(is_identical(root1, root2))
     print(is_identical(root3, root4))
     print()
+    print("-------- # Session 2: Binary Trees -------- ")
+    print("------ # Standard Problem Set Version 1 ------ ")
+    print("Problem 1: Monstera Madness")
+    """
+        2
+        / \
+        /   \
+    3     5
+    / \     \
+    6   7     12
+    """
 
+    # Using build_tree() function included at top of page
+    values = [2, 3, 5, 6, 7, None, 12]
+    monstera = build_tree(values)
+    print(count_odd_splits(monstera))
+    print(count_odd_splits(None))
+    print()
+    print("Problem 2: Flower Finding")
+    """
+            Rose
+            /    \
+        Lilac  Tulip
+        /  \       \
+    Daisy Lily   Violet
+    """
+
+    # using build_tree() function at top of page
+    values = ["Rose", "Lilac", "Tulip", "Daisy", "Lily", None, "Violet"]
+    garden = build_tree(values)
+    print(find_flower_2(garden, "Lilac"))  
+    print(find_flower_2(garden, "Sunflower")) 
+    print()
+    print("Problem 3: Flower Finding II")
+    """
+            Daisy
+            /    \
+        Lily   Tulip
+        /  \       \
+    Rose  Violet  Lilac
+    """
+    # using build_tree() function at top of page
+    values = ["Rose", "Lily", "Tulip", "Daisy", "Lilac", None, "Violet"]
+    garden = build_tree(values)
+    print(non_bst_find_flower(garden, "Lilac"))  
+    print(non_bst_find_flower(garden, "Sunflower"))  
+    print()
+    print("Problem 4: Adding a New Plant to the Collection")
+    """
+                Money Tree
+            /              \
+    Fiddle Leaf Fig    Snake Plant
+    """
+    # Using build_tree() function at the top of page
+    values = ["Money Tree", "Fiddle Leaf Fig", "Snake Plant"]
+    collection = build_tree(values)
+    # Using print_tree() function at the top of page
+    print_tree(add_plant(collection, "Aloe"))
+    print()
+    print("Problem 5: Sorting Plants by Rarity")
+    """
+            (3, "Monstera")
+            /               \
+    (1, "Pothos")     (5, "Witchcraft Orchid")
+            \                 /
+    (2, "Spider Plant")   (4, "Hoya Motoskei")
+    """
+
+    # Using build_tree() function at the top of page
+    values = [(3, "Monstera"), (1, "Pothos"), (5, "Witchcraft Orchid"), None, (2, "Spider Plant"), (4, "Hoya Motoskei")]
+    collection = build_tree(values)
+    print(sort_plants(collection))
+    print()
+    print("Problem 6: Finding a New Plant Within Budget")
+    """
+                (50, "Fiddle Leaf Fig")
+                /                       \
+        (25, "Monstera")           (70, "Snake Plant")
+        /        \                   /         \
+    (15, "Aloe")  (40, "Pothos")  (60, "Fern")  (80, "ZZ Plant")
+    """
+
+    # Using build_tree() function at the top of page
+    values = [(50, "Fiddle Leaf Fig"), (25, "Monstera"), (70, "Snake Plant"), (15, "Aloe"), 
+                (40, "Pothos"), (60, "Fern"), (80, "ZZ Plant")]
+    inventory = build_tree(values)
+    print(pick_plant(inventory, 50)) 
+    print(pick_plant(inventory, 25)) 
+    print(pick_plant(inventory, 15)) 
+    print()
+    print("Problem 7: Remove Plant")
+    """
+                Money Tree
+                /         \
+            Hoya        Pilea
+                \        /   \
+                Ivy    Orchid  ZZ Plant
+    """
+
+    # Using build_tree() function at the top of page
+    values = ["Money Tree", "Hoya", "Pilea", None, "Ivy", "Orchid", "ZZ Plant"]
+    collection = build_tree(values)
+    # Using print_tree() function at the top of page
+    print_tree(remove_plant(collection, "Pilea"))
+    print()
 
