@@ -900,16 +900,20 @@ def merge_intervals(intervals):
 if __name__ == "__main__":
     print("-------- # Session 1: Strings & Arrays -------- ")
     print("------ # Standard Problem Set Version 1 ------ ")
+    print("Problem 1: Hundred Acre Wood")
     welcome()
     print()
+    print("Problem 2: Greeting")
     greeting("Michael")
     greeting("Winnie the Pooh")
     print()
+    print("Problem 3: Catchphrase")
     character = "Pooh"
     print(print_catchphrase(character))
     character = "Piglet"
     print(print_catchphrase(character))
     print()
+    print("Problem 4: Return Item")
     items = ["piglet", "pooh", "roo", "rabbit"]
     x = 2
     print(get_item(items, x))
