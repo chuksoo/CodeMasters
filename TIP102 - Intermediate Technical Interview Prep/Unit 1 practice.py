@@ -1,5 +1,8 @@
+###################################################
 # Session 1: Strings & Arrays
+###################################################
 # Standard Problem Set Version 1
+# -------------------------------------------------
 ''' Problem 1: Hundred Acre Wood
 Write a function welcome() that prints the string "Welcome to The Hundred Acre Wood!".'''
 def welcome():
@@ -112,7 +115,9 @@ The indices in the resulting list should be ordered from least to greatest.'''
 def locate_thistles(items):
     return [i for i, val in enumerate(items) if val == 'thistle']
 
+# -------------------------------------------------
 # Standard Problem Set Version 2
+# -------------------------------------------------
 '''Problem 2: Mad Libs
 Write a function madlib() that accepts one parameter, a string verb. The function should print the sentence: "I have one power. I never <verb>. - Batman".
 '''
@@ -208,7 +213,9 @@ def shuffle(cards):
     # return new_lst
     return [cards[i // 2] if i % 2 == 0 else cards[n + i // 2] for i in range(len(cards))]
 
+# -------------------------------------------------
 # Advanced Problem Set Version 1
+# -------------------------------------------------
 '''Problem 1: Hunny Hunt
 Write a function linear_search() to help Winnie the Pooh locate his lost items. The function accepts a list items and a target value as parameters. 
 The function should return the first index of target in items, and -1 if target is not in the lst. Do not use any built-in functions.'''
@@ -288,7 +295,7 @@ def find_missing_clues(clues, lower, upper):
     clues.sort()
     # iniialize missing range
     missing_range = []
-    # handle gap befoe fist clue
+    # handle gap before first clue
     if lower < clues[0]:
         missing_range.append([lower, clues[0] - 1])
     # check gaps between clues
@@ -352,7 +359,9 @@ def local_maximums(grid):
 
     return local_maxes
 
+# -------------------------------------------------
 # Advanced Problem Set Version 2
+# -------------------------------------------------
 '''Problem 1: Words Containing Character
 Write a function words_with_char() that accepts a list of strings words and a character x. 
 Return a list of indices representing the words that contain the character x. The returned list may be in any order.
@@ -507,8 +516,11 @@ def defuse(code, k):
     # return result
     return result
 
-# Session 1: Strings & Arrays
+###################################################
+# Session 2: Strings & Arrays
+###################################################
 # Standard Problem Set Version 1
+# -------------------------------------------------
 '''Problem 1: Reverse Sentence
 Write a function reverse_sentence() that takes in a string sentence and returns the sentence with the order of the words reversed. 
 The sentence will contain only alphabetic characters and spaces to separate the words. If there is only one word in the sentence, 
@@ -921,14 +933,17 @@ if __name__ == "__main__":
     x = 5
     print(get_item(items, x))
     print()
+    print("Problem 5: Total Honey")
     hunny_jars = [2, 3, 4, 5]
     print(sum_honey(hunny_jars))
     hunny_jars = []
     print(sum_honey(hunny_jars))
     print()
+    print("Problem 6: Double Trouble")
     hunny_jars = [1, 2, 3]
     print(doubled(hunny_jars))
     print()
+    print("Problem 7: Poohsticks")
     race_times = [1, 2, 3, 4, 5, 6]
     threshold = 4
     print(count_less_than(race_times, threshold))
@@ -936,11 +951,13 @@ if __name__ == "__main__":
     threshold = 4
     print(count_less_than(race_times, threshold))
     print()
+    print("Problem 8: Pooh's To Do's")
     task = ["Count all the bees in the hive", "Chase all the clouds from the sky", "Think", "Stoutness Exercises"]
     print_todo_list(task)
     task = []
     print_todo_list(task)
     print()
+    print("Problem 9: Pairs")
     item_quantities = [2, 4, 6, 8]
     print(can_pair(item_quantities))
     item_quantities = [1, 2, 3, 4]
@@ -948,11 +965,13 @@ if __name__ == "__main__":
     item_quantities = []
     print(can_pair(item_quantities))
     print()
+    print("Problem 10: Split Haycorns")
     quantity = 6
     print(split_haycorns(quantity))
     quantity = 1
     print(split_haycorns(quantity))
     print()
+    print("Problem 11: T-I-Double Guh-ER")
     s = "suspicerous"
     print(tiggerfy(s))
     s = "Trigger"
@@ -960,49 +979,59 @@ if __name__ == "__main__":
     s = "Hunny"
     print(tiggerfy(s))
     print()
+    print("Problem 12: Thistle Hunt")
     items = ["thistle", "stick", "carrot", "thistle", "eeyore's tail"]
     print(locate_thistles(items))
     items = ["book", "bouncy ball", "leaf", "red balloon"]
     print(locate_thistles(items))
     print()
     print("------ # Standard Problem Set Version 2 ------ ")
+    print("Problem 2: Mad Libs")
     verb = "give up"
     print(madlib(verb))
     verb = "nap"
     print(madlib(verb))
     print()
+    print("Problem 3: Trilogy")
     year = 2008
     print(trilogy(year))
     year = 1998
     print(trilogy(year))
     print()
+    print("Problem 4: Last")
     items = ["spider man", "batman", "superman", "iron man", "wonder woman", "black adam"]
     print(get_last(items))
     items = []
     print(get_last(items))
     print()
+    print("Problem 5: Concatenate")
     words = ["vengeance", "darkness", "batman"]
     print(concatenate(words))
     words = []
     print(concatenate(words))
     print()
+    print("Problem 6: Squared")
     numbers = [1, 2, 3]
     print(squared(numbers))
     print()
+    print("Problem 7: NaNaNa Batman!")
     x = 6
     print(nanana_batman(x))
     x = 0
     print(nanana_batman(x))
     print()
+    print("Problem 8: Find the Villain")
     crowd = ['Batman', 'The Joker', 'Alfred Pennyworth', 'Robin', 'The Joker', 'Catwoman', 'The Joker']
     villain = 'The Joker'
     print(find_villain(crowd, villain))
     print()
+    print("Problem 9: Odd")
     nums = [1, 2, 3, 4]
     print(get_odds(nums))
     nums = [2, 4, 6, 8]
     print(get_odds(nums))
     print()
+    print("Problem 10: Up and Down")
     lst = [1, 2, 3]
     print(up_and_down(lst))
     lst = [1, 3, 5]
@@ -1010,6 +1039,7 @@ if __name__ == "__main__":
     lst = [2, 4, 10, 2]
     print(up_and_down(lst))
     print()
+    print("Problem 11: Running Sum")
     superhero_stats = [1, 2, 3, 4]
     print(running_sum(superhero_stats))
     superhero_stats = [1, 1, 1, 1, 1]
@@ -1017,6 +1047,7 @@ if __name__ == "__main__":
     superhero_stats = [3, 1, 2, 10, 1]
     print(running_sum(superhero_stats))
     print()
+    print("Problem 12: Shuffle")
     cards = ['Joker', 'Queen', 2, 3, 'Ace', 7]
     print(shuffle(cards))
     cards = [9, 2, 3, 'Joker', 'Joker', 3, 2, 9]
@@ -1025,6 +1056,7 @@ if __name__ == "__main__":
     print(shuffle(cards))
     print()
     print('------ # Advanced Problem Set Version 1 ------ ')
+    print("Problem 1: Hunny Hunt")
     items = ['haycorn', 'haycorn', 'haycorn', 'hunny', 'haycorn']
     target = 'hunny'
     print(linear_search(items, target))
@@ -1032,11 +1064,13 @@ if __name__ == "__main__":
     target = 'red balloon'
     print(linear_search(items, target))
     print()
+    print("Problem 2: Bouncy, Flouncy, Trouncy, Pouncy")
     operations = ["trouncy", "flouncy", "flouncy"]
     print(final_value_after_operations(operations))
     operations = ["bouncy", "bouncy", "flouncy"]
     print(final_value_after_operations(operations))
     print()
+    print("Problem 3: T-I-Double Guh-Er II")
     word = "Trigger"
     print(tiggerfy(word))
     word = "eggplant"
@@ -1044,6 +1078,7 @@ if __name__ == "__main__":
     word = "Choir"
     print(tiggerfy(word))
     print()
+    print("Problem 4: Non-decreasing Array")
     nums = [4, 2, 3]
     print(non_decreasing(nums))
     nums = [4, 2, 1]
@@ -1053,6 +1088,7 @@ if __name__ == "__main__":
     nums = [3, 4, 6, 5, 4, 2, 1]
     print(non_decreasing(nums))
     print()
+    print("Problem 5: Missing Clues")
     clues = [0, 1, 3, 50, 75]
     lower = 0
     upper = 99
@@ -1062,6 +1098,7 @@ if __name__ == "__main__":
     upper = -1
     print(find_missing_clues(clues, lower, upper))
     print()
+    print("Problem 6: Vegetable Harvest")
     vegetable_patch = [
     ['x', 'c', 'x'],
     ['x', 'x', 'x'],
@@ -1070,6 +1107,7 @@ if __name__ == "__main__":
     ]
     print(harvest(vegetable_patch))
     print()
+    print("Problem 7: Eeyore's House")
     pile1 = [1, 3, 4]
     pile2 = [1, 3, 4]
     k = 1
