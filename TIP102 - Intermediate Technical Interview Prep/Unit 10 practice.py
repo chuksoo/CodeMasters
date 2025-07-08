@@ -179,7 +179,6 @@ def find_itinerary(boarding_passes):
 
 
 
-
 if __name__ == "__main__":
     print("-------- # Session 1: Graphs -------- ")
     print("------ # Standard Problem Set Version 1 ------ ")

@@ -348,7 +348,7 @@ def local_maximums(grid):
 
     for i in range(n - 2):
         for j in range(n - 2):
-            # extract 3x3 submatrix and ind maximum value
+            # extract 3x3 submatrix and find maximum value
             max_value = max(
                 grid[i][j], grid[i][j+1], grid[i][j+2],
                 grid[i+1][j], grid[i+1][j+1], grid[i+1][j+2],
@@ -401,7 +401,6 @@ You may assume len(message) is equal to the len(indices).'''
 
 def shuffle_encode(message, indices):
     message_map = {}
-    indices = indices
     for i, val in enumerate(message):
         message_map[i] = val
     
@@ -422,18 +421,18 @@ needed to redistribute the n packs of meals into boxes.
 
 Note that meals from the same pack can be distributed into different boxes.'''
 def minimum_boxes(meals, capacity):
-    total_meals = sum(meals)
-    capacity.sort(reverse=True)
+    total_meals = sum(meals) 
+    capacity.sort(reverse=True) 
 
     box_used = 0
-    meals_distributed = 0
+    meals_distributed = 0 
 
     for box_capacity in capacity:
         if meals_distributed >= total_meals:
             break
 
-        meals_distributed += box_capacity
-        box_used += 1
+        meals_distributed += box_capacity 
+        box_used += 1 
     return box_used
 
 '''Problem 5: Heist
@@ -1117,6 +1116,7 @@ if __name__ == "__main__":
     k = 3
     print(good_pairs(pile1, pile2, k))
     print()
+    print("Problem 8: Local Maximums")
     grid = [
     [9, 9, 8, 1],
     [5, 6, 2, 6],
@@ -1135,6 +1135,7 @@ if __name__ == "__main__":
     print(local_maximums(grid))
     print()
     print('------ # Advanced Problem Set Version 2 ------ ')
+    print("Problem 1: Words Containing Character")
     words = ["batman", "superman"]
     x = "a"
     print(words_with_char(words, x))
@@ -1145,6 +1146,7 @@ if __name__ == "__main__":
     x = "z"
     print(words_with_char(words, x))
     print()
+    print("Problem 2: HulkSmash")
     n = 3
     print(hulk_smash(n))
     n = 5
@@ -1152,6 +1154,7 @@ if __name__ == "__main__":
     n = 15
     print(hulk_smash(n))
     print()
+    print("Problem 3: Encode")
     message = "evil"
     indices = [3, 1, 2, 0]
     print(shuffle_encode(message, indices))
@@ -1159,6 +1162,7 @@ if __name__ == "__main__":
     indices = [0, 1, 2, 3, 4, 5]
     print(shuffle_encode(message, indices))
     print()
+    print("Problem 4: Good Samaritan")
     meals = [1, 3, 2]
     capacity = [4, 3, 1, 5, 2]
     print(minimum_boxes(meals, capacity))
@@ -1166,6 +1170,7 @@ if __name__ == "__main__":
     capacity = [2, 4, 2, 7]
     print(minimum_boxes(meals, capacity))
     print()
+    print("Problem 5: Heist")
     accounts = [
         [1, 2, 3],
         [3, 2, 1]
@@ -1186,6 +1191,7 @@ if __name__ == "__main__":
     ]
     print(wealthiest_customer(accounts))
     print()
+    print("Problem 6: Smaller Than")
     nums = [8, 1, 2, 2, 3]
     print(smaller_than_current(nums))
     nums = [6, 5, 4, 8]
@@ -1193,6 +1199,7 @@ if __name__ == "__main__":
     nums = [7, 7, 7, 7]
     print(smaller_than_current(nums))
     print()
+    print("Problem 7: Diagonal")
     grid = [
     [1, 2, 3],
     [4, 5, 6],
@@ -1211,6 +1218,7 @@ if __name__ == "__main__":
     ]
     print(diagonal_sum(grid))
     print()
+    print("Problem 8: Defuse the Bomb")
     code = [5, 7, 1, 4]
     k = 3
     print(defuse(code, k))
