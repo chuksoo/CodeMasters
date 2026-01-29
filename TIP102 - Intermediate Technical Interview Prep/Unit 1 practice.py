@@ -197,7 +197,13 @@ The function should modify the list to return the running sum such that superher
 You must modify the list in place; you may not create any new lists as part of your solution.'''
 import itertools
 def running_sum(superhero_stats):
-    return list(itertools.accumulate(superhero_stats))
+    # Brute force - Space: O(1), Time: O(n)
+    for i in range(1, len(superhero_stats)):
+        superhero_stats[i] = superhero_stats[i] + superhero_stats[i - 1]
+    return superhero_stats
+
+    # Optimized version
+    # return list(itertools.accumulate(superhero_stats))
 
 '''Problem 12: Shuffle
 Write a function shuffle() that accepts a list cards of 2n elements in the form [x1,x2,...,xn,y1,y2,...,yn]. Return the list in the form [x1,y1,x2,y2,...,xn,yn].
